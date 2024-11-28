@@ -1,0 +1,563 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		932B3BD12CF7FF7B00AF503D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 932B3BB82CF7FF7900AF503D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 932B3BBF2CF7FF7900AF503D;
+			remoteInfo = "Podium Timer";
+		};
+		932B3BDB2CF7FF7B00AF503D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 932B3BB82CF7FF7900AF503D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 932B3BBF2CF7FF7900AF503D;
+			remoteInfo = "Podium Timer";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		932B3BC02CF7FF7900AF503D /* Podium Timer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Podium Timer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		932B3BD02CF7FF7B00AF503D /* Podium TimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Podium TimerTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		932B3BDA2CF7FF7B00AF503D /* Podium TimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Podium TimerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		932B3BC22CF7FF7900AF503D /* Podium Timer */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Podium Timer";
+			sourceTree = "<group>";
+		};
+		932B3BD32CF7FF7B00AF503D /* Podium TimerTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Podium TimerTests";
+			sourceTree = "<group>";
+		};
+		932B3BDD2CF7FF7B00AF503D /* Podium TimerUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Podium TimerUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		932B3BBD2CF7FF7900AF503D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		932B3BCD2CF7FF7B00AF503D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		932B3BD72CF7FF7B00AF503D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		932B3BB72CF7FF7900AF503D = {
+			isa = PBXGroup;
+			children = (
+				932B3BC22CF7FF7900AF503D /* Podium Timer */,
+				932B3BD32CF7FF7B00AF503D /* Podium TimerTests */,
+				932B3BDD2CF7FF7B00AF503D /* Podium TimerUITests */,
+				932B3BC12CF7FF7900AF503D /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		932B3BC12CF7FF7900AF503D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				932B3BC02CF7FF7900AF503D /* Podium Timer.app */,
+				932B3BD02CF7FF7B00AF503D /* Podium TimerTests.xctest */,
+				932B3BDA2CF7FF7B00AF503D /* Podium TimerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		932B3BBF2CF7FF7900AF503D /* Podium Timer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 932B3BE42CF7FF7B00AF503D /* Build configuration list for PBXNativeTarget "Podium Timer" */;
+			buildPhases = (
+				932B3BBC2CF7FF7900AF503D /* Sources */,
+				932B3BBD2CF7FF7900AF503D /* Frameworks */,
+				932B3BBE2CF7FF7900AF503D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				932B3BC22CF7FF7900AF503D /* Podium Timer */,
+			);
+			name = "Podium Timer";
+			packageProductDependencies = (
+			);
+			productName = "Podium Timer";
+			productReference = 932B3BC02CF7FF7900AF503D /* Podium Timer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		932B3BCF2CF7FF7B00AF503D /* Podium TimerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 932B3BE72CF7FF7B00AF503D /* Build configuration list for PBXNativeTarget "Podium TimerTests" */;
+			buildPhases = (
+				932B3BCC2CF7FF7B00AF503D /* Sources */,
+				932B3BCD2CF7FF7B00AF503D /* Frameworks */,
+				932B3BCE2CF7FF7B00AF503D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				932B3BD22CF7FF7B00AF503D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				932B3BD32CF7FF7B00AF503D /* Podium TimerTests */,
+			);
+			name = "Podium TimerTests";
+			packageProductDependencies = (
+			);
+			productName = "Podium TimerTests";
+			productReference = 932B3BD02CF7FF7B00AF503D /* Podium TimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		932B3BD92CF7FF7B00AF503D /* Podium TimerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 932B3BEA2CF7FF7B00AF503D /* Build configuration list for PBXNativeTarget "Podium TimerUITests" */;
+			buildPhases = (
+				932B3BD62CF7FF7B00AF503D /* Sources */,
+				932B3BD72CF7FF7B00AF503D /* Frameworks */,
+				932B3BD82CF7FF7B00AF503D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				932B3BDC2CF7FF7B00AF503D /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				932B3BDD2CF7FF7B00AF503D /* Podium TimerUITests */,
+			);
+			name = "Podium TimerUITests";
+			packageProductDependencies = (
+			);
+			productName = "Podium TimerUITests";
+			productReference = 932B3BDA2CF7FF7B00AF503D /* Podium TimerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		932B3BB82CF7FF7900AF503D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1610;
+				LastUpgradeCheck = 1610;
+				TargetAttributes = {
+					932B3BBF2CF7FF7900AF503D = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					932B3BCF2CF7FF7B00AF503D = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 932B3BBF2CF7FF7900AF503D;
+					};
+					932B3BD92CF7FF7B00AF503D = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = 932B3BBF2CF7FF7900AF503D;
+					};
+				};
+			};
+			buildConfigurationList = 932B3BBB2CF7FF7900AF503D /* Build configuration list for PBXProject "Podium Timer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 932B3BB72CF7FF7900AF503D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 932B3BC12CF7FF7900AF503D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				932B3BBF2CF7FF7900AF503D /* Podium Timer */,
+				932B3BCF2CF7FF7B00AF503D /* Podium TimerTests */,
+				932B3BD92CF7FF7B00AF503D /* Podium TimerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		932B3BBE2CF7FF7900AF503D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		932B3BCE2CF7FF7B00AF503D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		932B3BD82CF7FF7B00AF503D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		932B3BBC2CF7FF7900AF503D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		932B3BCC2CF7FF7B00AF503D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		932B3BD62CF7FF7B00AF503D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		932B3BD22CF7FF7B00AF503D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 932B3BBF2CF7FF7900AF503D /* Podium Timer */;
+			targetProxy = 932B3BD12CF7FF7B00AF503D /* PBXContainerItemProxy */;
+		};
+		932B3BDC2CF7FF7B00AF503D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 932B3BBF2CF7FF7900AF503D /* Podium Timer */;
+			targetProxy = 932B3BDB2CF7FF7B00AF503D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		932B3BE22CF7FF7B00AF503D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		932B3BE32CF7FF7B00AF503D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		932B3BE52CF7FF7B00AF503D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Podium Timer/Preview Content\"";
+				DEVELOPMENT_TEAM = 7626254DY3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dashun.Podium-Timer";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		932B3BE62CF7FF7B00AF503D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Podium Timer/Preview Content\"";
+				DEVELOPMENT_TEAM = 7626254DY3;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dashun.Podium-Timer";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		932B3BE82CF7FF7B00AF503D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7626254DY3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dashun.Podium-TimerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Podium Timer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Podium Timer";
+			};
+			name = Debug;
+		};
+		932B3BE92CF7FF7B00AF503D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7626254DY3;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dashun.Podium-TimerTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Podium Timer.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Podium Timer";
+			};
+			name = Release;
+		};
+		932B3BEB2CF7FF7B00AF503D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7626254DY3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dashun.Podium-TimerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Podium Timer";
+			};
+			name = Debug;
+		};
+		932B3BEC2CF7FF7B00AF503D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7626254DY3;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Dashun.Podium-TimerUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Podium Timer";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		932B3BBB2CF7FF7900AF503D /* Build configuration list for PBXProject "Podium Timer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				932B3BE22CF7FF7B00AF503D /* Debug */,
+				932B3BE32CF7FF7B00AF503D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		932B3BE42CF7FF7B00AF503D /* Build configuration list for PBXNativeTarget "Podium Timer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				932B3BE52CF7FF7B00AF503D /* Debug */,
+				932B3BE62CF7FF7B00AF503D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		932B3BE72CF7FF7B00AF503D /* Build configuration list for PBXNativeTarget "Podium TimerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				932B3BE82CF7FF7B00AF503D /* Debug */,
+				932B3BE92CF7FF7B00AF503D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		932B3BEA2CF7FF7B00AF503D /* Build configuration list for PBXNativeTarget "Podium TimerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				932B3BEB2CF7FF7B00AF503D /* Debug */,
+				932B3BEC2CF7FF7B00AF503D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 932B3BB82CF7FF7900AF503D /* Project object */;
+}
