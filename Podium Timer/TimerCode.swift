@@ -6,11 +6,20 @@ class TimerCode: ObservableObject {
     @Published private var totalTime: TimeInterval = 60
     @Published var remainingTime: TimeInterval = 60
     @Published var timerRunning: Bool = false
+    @Published var overtime: Bool = false
+    
+    init(totalTime: TimeInterval) {
+            self.totalTime = totalTime
+            self.remainingTime = totalTime
+        }
+    
+    private var tickIncrement: TimeInterval = 0.05
     
     // Converts time progress for a percentage
     var timerProgress: CGFloat {
         guard totalTime > 0 else { return 1.0 }
-        return 1.0 - (CGFloat(remainingTime) / CGFloat(totalTime))
+        let adjustedRemaining = max(0, remainingTime) // If remainingTime < 0, treat as 0
+        return 1.0 - (CGFloat(adjustedRemaining) / CGFloat(totalTime))
     }
     
     // Converts remaining time to formatted string (Self-published)
@@ -18,10 +27,9 @@ class TimerCode: ObservableObject {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.minute, .second] // Format as minutes and seconds
         formatter.zeroFormattingBehavior = .pad    // Add leading zeros
-        return formatter.string(from: remainingTime) ?? "00:00"
+        return formatter.string(from: abs(remainingTime)) ?? "00:00"
     }
     
-    private var tickIncrement: TimeInterval = 0.01
     
     // Start timer
     func start(startTime: TimeInterval? = nil) {
@@ -43,20 +51,28 @@ class TimerCode: ObservableObject {
         timer?.invalidate()
         timer = nil
         timerRunning = false
+        overtime = false
     }
         
     // Reset the timer
     func reset() {
         stop()
         remainingTime = totalTime
+        overtime = false
     }
     
     // Handle a timer tick
     private func tick() {
-        if remainingTime > 0 {
-            remainingTime -= tickIncrement
-        } else {
-            stop()
-        }
+        DispatchQueue.main.async {
+                withAnimation(.linear(duration: 0.05)) { // Force animation recognition
+                    self.remainingTime -= self.tickIncrement
+                    if self.remainingTime < 0.5 {
+                        self.overtime = true
+                    } else {
+                        self.overtime = false
+                    }
+                }
+            }
+        print(remainingTime)
     }
 }

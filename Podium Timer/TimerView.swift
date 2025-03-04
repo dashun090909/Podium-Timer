@@ -1,92 +1,133 @@
 import SwiftUI
 
 struct TimerView: View {
-    @EnvironmentObject var TimerCode: TimerCode
+    @StateObject private var TimerCode: TimerCode
+
+    let speechTitle: String   // Parameter for speechTitle text
+    let totalTime: TimeInterval  // Parameter for total time
+    @Binding var swipeAllowed: Bool // Parameter for parent view swipe control
+    init(speechTitle: String, totalTime: TimeInterval, swipeAllowed: Binding<Bool>) {
+        self.speechTitle = speechTitle
+        self.totalTime = totalTime
+        _swipeAllowed = swipeAllowed // Passes binding from parent
+        _TimerCode = StateObject(wrappedValue: Podium_Timer.TimerCode(totalTime: totalTime)) // Creates own instance of TimerCode using totalTime
+    }
+    
+    @State private var overtimePulse = true
+    @State private var refreshTrigger = false // A toggle to force updates
+    let screenSize = UIScreen.main.bounds.size
     
     var body: some View {
-        VStack {
-            Spacer()
+        ZStack {
+            // Overtime Background Pulse
+            Rectangle()
+                .frame(width: screenSize.width + 50, height: screenSize.height + 50)
+                .foregroundStyle(TimerCode.overtime ? Color("OvertimeRed") : Color("BackgroundColor"))
+                .opacity(overtimePulse ? 1 : 0)
+                .animation(
+                    TimerCode.overtime
+                    ? .easeInOut(duration: 0.5).repeatForever(autoreverses: true)
+                        : .default,
+                    value: TimerCode.overtime
+                )
             
-            // Title
-            Text("AFF    |    1AC")
-                .font(.title.bold())
-                .padding()
-            
-            Spacer()
-            
-            // Timer circle
-            ZStack {
-                // Background circle
-                Circle()
-                    .stroke(Color("RegressedColor"), lineWidth: 12)
-                    .rotationEffect(Angle(degrees: -90))
+            VStack {
+                Spacer()
                 
-                // Proggress bar
-                Circle()
-                    .trim(from: TimerCode.timerProgress, to: 1)
-                    .stroke(progressColor(), style: StrokeStyle(lineWidth: 12, lineCap: .round))
-                    .rotationEffect(Angle(degrees: -90))
-                    .shadow(color: progressColor(), radius: 10)
-                    .animation(.linear(duration: 0.1), value:  TimerCode.timerProgress)
-
-                // Analog time
-                Text(TimerCode.timerAnalog)
-                    .font(.system(size: 50, weight: .medium, design: .monospaced))
-                    .kerning(3)
-            }
-            .frame(width: 300, height: 300)
-            .padding()
-            
-            Spacer()
-            
-            // Start/Stop Button
-            Button(action: {
-                if TimerCode.timerRunning { TimerCode.stop() }
-                else { TimerCode.start() }
-            }) {
-                Text(TimerCode.timerRunning ? "Stop" : "Start")
-                    .frame(width: 110, height: 110)
-                    .background {
-                        Circle()
-                            .fill(Color(TimerCode.timerRunning ? "OvertimeRed" : "StartingGreen").opacity(0.2))
+                // Title
+                Text(speechTitle)
+                    .font(.title.bold())
+                    .padding(.top, 50)
+                
+                Spacer()
+                
+                // Timer circle
+                ZStack {
+                    // Background circle
+                    Circle()
+                        .stroke(Color("RegressedColor"), lineWidth: 12)
+                        .rotationEffect(Angle(degrees: -90))
+                    
+                    // Proggress bar
+                    Circle()
+                        .trim(from: TimerCode.timerProgress, to: 1)
+                        .stroke(progressColor(), style: StrokeStyle(lineWidth: 12, lineCap: .round))
+                        .rotationEffect(Angle(degrees: -90))
+                        .shadow(color: progressColor(), radius: 10)
+                        .animation(.linear, value: TimerCode.timerProgress)
+                    
+                    // Overtime Indiciator
+                    Text(TimerCode.overtime ? "OVERTIME" : "")
+                        .font(.system(size: 20, weight: .medium, design: .monospaced))
+                        .kerning(3)
+                        .offset(y: -50)
+                        .animation(.easeIn, value: TimerCode.overtime)
+                    
+                    // Analog time
+                    Text(TimerCode.timerAnalog)
+                        .font(.system(size: 50, weight: .medium, design: .monospaced))
+                        .kerning(3)
+                }
+                .frame(width: 300, height: 300)
+                
+                Spacer()
+                
+                // Start/Stop Button
+                Button(action: {
+                    if TimerCode.timerRunning {
+                        TimerCode.stop()
+                        swipeAllowed = true
+                    } else {
+                        TimerCode.start()
+                        swipeAllowed = false // Locks swiping to prevent moving to other timers
                     }
-                    .font(.system(size: 25, weight: .light))
-                    .foregroundStyle(Color(TimerCode.timerRunning ? "OvertimeRed" : "StartingGreen"))
-                    .animation(.linear(duration: 0.1), value: TimerCode.timerRunning)
+                }) {
+                    Text(TimerCode.timerRunning ? "Stop" : "Start")
+                        .frame(width: 110, height: 110)
+                        .background {
+                            Circle()
+                                .fill(Color(TimerCode.timerRunning ? "DangerRed" : "StartingGreen").opacity(0.2))
+                        }
+                        .font(.system(size: 25, weight: .light))
+                        .foregroundStyle(Color(TimerCode.timerRunning ? "DangerRed" : "StartingGreen"))
+                        .animation(.linear(duration: 0.1), value: TimerCode.timerRunning)
+                }
+                .contentShape(Circle())
+                .frame(width: 110, height: 110)
+                .padding()
+                
+                // Reset button
+                Button(action: {
+                    TimerCode.reset()
+                    swipeAllowed = true
+                }) {
+                    Text("Reset")
+                        .font(.system(size: 20, weight: .light))
+                        .foregroundStyle(Color.primary)
+                }
+                .padding(.bottom, 70)
+                .padding()
+                
             }
-            .contentShape(Circle())
-            .frame(width: 110, height: 110)
-            
-            // Reset button
-            Button(action: {
-                TimerCode.reset()
-            }) {
-                Text("Reset")
-                    .font(.system(size: 20, weight: .light))
-                    .foregroundStyle(Color.primary)
-            }
-            .padding()
         }
-        .frame(width: 300, height: 700)
-        .padding(1000)
-        .background(Color("BackgroundColor"))
+        .frame(width: screenSize.width, height: screenSize.height)
+        .background(Color("BackgroundColor").ignoresSafeArea())
         .preferredColorScheme(.dark)
     }
     
     // Determines color for progress bar
     private func progressColor() -> Color {
         // Color transition logic
-        if TimerCode.remainingTime > 30 {
+        if TimerCode.remainingTime > 31 {
             return Color("StartingGreen")
-        } else if TimerCode.remainingTime > 10 {
+        } else if TimerCode.remainingTime > 11 {
             return Color("WarningYellow")
         } else {
-            return Color("OvertimeRed")
+            return Color("DangerRed")
         }
     }
 }
 
 #Preview {
-    TimerView()
-        .environmentObject(TimerCode())
+    TimerView(speechTitle: "AFF    |    1AC", totalTime: 360, swipeAllowed: .constant(true))
 }

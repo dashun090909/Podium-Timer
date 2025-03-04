@@ -4,8 +4,7 @@ import SwiftUI
 struct Podium_TimerApp: App {
     var body: some Scene {
         WindowGroup {
-            TimerView()
-                .environmentObject(TimerCode())
+            LDView()
         }
     } 
 }
