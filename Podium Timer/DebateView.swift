@@ -21,6 +21,9 @@ struct DebateView: View {
     }
 
     var body: some View {
+        Text("Loaded DebateView with \(AppState.speechTitles.count) titles")
+            .foregroundColor(.white)
+        
         ZStack {
             // Overtime background pulse
             Rectangle()
@@ -38,9 +41,44 @@ struct DebateView: View {
                 }} // Animation timer to manipulate overtime pulse
             
             VStack {
+                Spacer()
+                
+                // Top bar with End Round and Save buttons
+                HStack {
+                    // End Round Button
+                    Button(action: {
+                        // Reset all timers
+                        timers = []
+                        AppState.currentTabIndex = 0
+                        AppState.view = "EventsView"
+                    }) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 20, weight: .bold))
+                            Text("End Round")
+                                .font(.system(size: 20, weight: .light))
+                        }
+                        .foregroundColor(.primary.opacity(0.7))
+                    }
+                    .offset(x: 30)
+
+                    Spacer()
+
+                    Button(action: {
+                    }) {
+                        Text("Save")
+                            .font(.system(size:20, weight: .light))
+                        .foregroundColor(.primary.opacity(0.7))
+                    }
+                    .offset(x: -40)
+                }
+                .padding(.horizontal)
+                .offset(y: 65)
+                
                 // Stage Indicator
                 StageIndicatorView(pageCount: AppState.speechTitles.count, currentPage: AppState.currentTabIndex, speechTypes: AppState.speechTypes)
-                    .padding(100)
+                    .offset(y: 75)
+
                 
                 // Tabview of TimerView instances according to AppState arrays
                 TabView(selection: $AppState.currentTabIndex) {
@@ -54,7 +92,6 @@ struct DebateView: View {
                     }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .padding(.top, -180)
                 .overlay(
                     swipeAllowed ? nil : Color.clear.contentShape(Rectangle())
                 ) // Invisible overlay blocks swiping according to swipeAllowed
@@ -64,6 +101,8 @@ struct DebateView: View {
                     } // Add new timers to timer based on map of speech times on first appearance
                     AppState.currentTabIndex = 0 // Force first indication for stage indicator
                 }
+                .padding(10)
+                .offset(y:20)
                 
                 // Reset Button that interacts with current TimerCode instance
                 Button(action: {
@@ -74,7 +113,7 @@ struct DebateView: View {
                         .font(.system(size: 20, weight: .light))
                         .foregroundStyle(Color.primary)
                 }
-                .padding(.top, -50)
+                .offset(y: -20)
 
                 // Start/Stop button that interacts with current TimerCode instance
                 Button(action: {
@@ -96,9 +135,8 @@ struct DebateView: View {
                         .foregroundStyle(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen"))
                 }
                 .contentShape(Circle())
-                .padding(.bottom, 100)
+                .padding(.bottom, 110)
                 
-                Spacer()
             }
         }
         .background(Color("BackgroundColor").ignoresSafeArea())

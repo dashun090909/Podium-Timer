@@ -19,7 +19,7 @@ struct StageIndicatorView: View {
                     switch speechType {
                     case "AFF", "AFFCX": return Color("AFF")
                     case "NEG", "NEGCX": return Color("NEG")
-                    default: return Color("primary")
+                    default: return Color.primary
                     }
                 }()
                 
@@ -30,14 +30,14 @@ struct StageIndicatorView: View {
                         .frame(width: isCurrent ? baseWidth * 1.75 : baseWidth, height: 8)
                     
                     // Diagonal strips if CX
-                    if ["AFFCX", "NEGCX"].contains(speechType) {
+                    if speechType.contains("CX") {
                         ZStack {
-                            ForEach(0..<25, id: \.self) { j in
+                            ForEach(0..<50, id: \.self) { j in
                                 Rectangle()
                                     .fill(Color("BackgroundColor"))
                                     .frame(width: 3, height: 200)
                                     .rotationEffect(.degrees(45))
-                                    .offset(x: CGFloat(j) * 15 - 38)
+                                    .offset(x: CGFloat(j) * 15 - 83)
                             }
                         }
                         .frame(width: isCurrent ? baseWidth * 1.75 : baseWidth, height: 8)
@@ -53,9 +53,9 @@ struct StageIndicatorView: View {
 
 #Preview {
     StageIndicatorView(
-        pageCount: 7,
+        pageCount: 11,
         currentPage: 4,
-        speechTypes: ["AFF", "AFFCX", "NEG", "NEGCX", "AFF", "NEG", "AFF"]
+        speechTypes: ["AFF", "NEG", "FCX", "AFF", "NEG", "FCX", "AFF", "NEG", "GFCX", "AFF", "NEG"]
     )
     .environmentObject(AppState())
 }

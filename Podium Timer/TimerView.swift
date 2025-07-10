@@ -24,19 +24,19 @@ struct TimerView: View {
                     // Background for AFF/NEG
                     ZStack {
                         // Base rectangle
-                        RoundedRectangle(cornerRadius: 20)
+                        RoundedRectangle(cornerRadius: 15)
                             .fill(
-                                Color(
-                                    AppState.speechTypes[AppState.currentTabIndex] == "AFF" ? "AFF" :
-                                    AppState.speechTypes[AppState.currentTabIndex] == "NEG" ? "NEG" :
-                                    AppState.speechTypes[AppState.currentTabIndex] == "AFFCX" ? "AFF" :
-                                    AppState.speechTypes[AppState.currentTabIndex] == "NEGCX" ? "NEG" :
-                                    "primary"
+                                (
+                                    AppState.speechTypes[AppState.currentTabIndex] == "AFF" ? Color("AFF") :
+                                    AppState.speechTypes[AppState.currentTabIndex] == "NEG" ? Color("NEG") :
+                                    AppState.speechTypes[AppState.currentTabIndex] == "AFFCX" ? Color("AFF") :
+                                    AppState.speechTypes[AppState.currentTabIndex] == "NEGCX" ? Color("NEG") :
+                                    Color.primary
                                 ).opacity(0.4)
                             )
 
                         // Stripes for CX speeches only
-                        if ["AFFCX", "NEGCX"].contains(AppState.speechTypes[AppState.currentTabIndex]) {
+                        if AppState.speechTypes[AppState.currentTabIndex].contains("CX") {
                             ZStack {
                                 ForEach(0..<50, id: \.self) { i in
                                     Rectangle()
@@ -46,11 +46,10 @@ struct TimerView: View {
                                         .offset(x: CGFloat(i) * 60 - 450)
                                 }
                             }
-                            .frame(width: 1000, height: 70)
+                            .frame(width: min(CGFloat(speechTitle.count) * 60, 300), height: 70)
                         }
                     }
-                    .frame(width: 200, height: 70)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .frame(width: min(CGFloat(speechTitle.count) * 60, 300), height: 70)                    .clipShape(RoundedRectangle(cornerRadius: 15))
                     
                     // Title text
                     Text(speechTitle)
@@ -85,15 +84,17 @@ struct TimerView: View {
                         .font(.system(size: 50, weight: .medium, design: .monospaced))
                         .kerning(3)
                     
-                    // Speaker Indicator
-                    Text(AppState.speechSpeakers[AppState.currentTabIndex])
-                        .font(.system(size: 17.5, weight: .medium, design: .monospaced))
-                        .multilineTextAlignment(.center)
-                        .foregroundStyle(.primary.opacity(TimerCode.timerRunning ? 0.2 : 0.75))
-                        .offset(y: 60)
-                        .animation(.easeIn, value: TimerCode.timerRunning)
+                    // Speaker Indicator if relevant for this event
+                    if AppState.speechSpeakers.count != 0 {
+                        Text(AppState.speechSpeakers[AppState.currentTabIndex])
+                            .font(.system(size: 17.5, weight: .medium, design: .monospaced))
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.primary.opacity(TimerCode.timerRunning ? 0.2 : 0.75))
+                            .offset(y: 60)
+                            .animation(.easeIn, value: TimerCode.timerRunning)
+                    }
                 }
-                .frame(width: 300, height: 300)
+                .frame(width: 290, height: 300)
                 .padding(20)
             }
         }
