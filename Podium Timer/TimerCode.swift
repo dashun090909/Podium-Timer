@@ -2,18 +2,22 @@ import SwiftUI
 import Combine
 
 class TimerCode: ObservableObject {
-    @Published private var timer: Timer?
-    @Published private var totalTime: TimeInterval = 60
     @Published var remainingTime: TimeInterval = 60
     @Published var timerRunning: Bool = false
     @Published var overtime: Bool = false
+    
+    private var timer: Timer?
+    private var totalTime: TimeInterval = 60
+    private var startTime: Date?
     
     init(totalTime: TimeInterval) {
             self.totalTime = totalTime
             self.remainingTime = totalTime
         }
     
-    private var tickIncrement: TimeInterval = 0.05
+    private var tickIncrement: TimeInterval = 0.01
+    
+    private var timerSpeed: Double = 5
     
     // Converts time progress for a percentage
     var timerProgress: CGFloat {
@@ -34,6 +38,7 @@ class TimerCode: ObservableObject {
     // Start timer
     func start(startTime: TimeInterval? = nil) {
         stop()
+        self.startTime = Date.now
         timerRunning = true
         
         // If a start time is provided, set it. (Otherwise would carry on with current remaining time)
@@ -42,7 +47,7 @@ class TimerCode: ObservableObject {
             remainingTime = startTime
         }
         
-        // Schedules the timer to call tick every second
+        // Schedules the timer to call tick every tickIncrement second
         timer = Timer.scheduledTimer(withTimeInterval: tickIncrement, repeats: true) { [weak self] _ in self?.tick() }
     }
     
@@ -65,7 +70,7 @@ class TimerCode: ObservableObject {
     private func tick() {
         DispatchQueue.main.async {
                 withAnimation(.linear(duration: 0.05)) { // Force animation recognition
-                    self.remainingTime -= self.tickIncrement
+                    self.remainingTime -= self.tickIncrement * self.timerSpeed
                     if self.remainingTime < 0.5 {
                         self.overtime = true
                     } else {
@@ -73,6 +78,5 @@ class TimerCode: ObservableObject {
                     }
                 }
             }
-        print(remainingTime)
     }
 }
