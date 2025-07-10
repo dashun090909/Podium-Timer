@@ -1,28 +1,23 @@
 import SwiftUI
 
 struct LDView: View {
-    @EnvironmentObject var appState: AppState
-        
-    // Individual TimerCode instances for each timer
-    @StateObject private var timer1 = TimerCode(totalTime: 360)
-    @StateObject private var timer2 = TimerCode(totalTime: 180)
-    @StateObject private var timer3 = TimerCode(totalTime: 420)
-    @StateObject private var timer4 = TimerCode(totalTime: 180)
+    @EnvironmentObject var AppState: AppState
+    
+    // Array of TimerCode instances for each timer
+    @State private var timers: [TimerCode] = []
     
     // Overtime pulse state for background animation
     @State private var overtimePulse: Bool = true
     
+    // State variable for swipe locking when timer is running
     @State private var swipeAllowed: Bool = true
     
-    // Dynamic variable that switches TimerCode instance depending on current tab
+    // Finds current timer according to current tab index
     var currentTimer: TimerCode {
-        switch appState.currentTabIndex {
-        case 1: return timer1
-        case 2: return timer2
-        case 3: return timer3
-        case 4: return timer4
-        default: return timer1
+        guard AppState.currentTabIndex < timers.count else {
+            return TimerCode(totalTime: 0)
         }
+        return timers[AppState.currentTabIndex]
     }
 
     var body: some View {
@@ -40,31 +35,34 @@ struct LDView: View {
                     } else {
                         overtimePulse = true
                     }
-                }} // Animation timer to manipulate overtimePulse
+                }} // Animation timer to manipulate overtime pulse
             
             VStack {
                 // Stage Indicator
-                StageIndicatorView(pageCount: 4, currentPage: appState.currentTabIndex)
+                StageIndicatorView(pageCount: AppState.speechTitles.count, currentPage: AppState.currentTabIndex, speechTypes: AppState.speechTypes)
                     .padding(100)
                 
-                // Tabview of TimerView instances
-                TabView(selection: $appState.currentTabIndex) {
-                    TimerView(speechTitle: "AFF | 1AC", totalTime: 360, prepTime: false, timerCode: timer1)
-                        .tag(1)
-                    TimerView(speechTitle: "AFF | CX", totalTime: 180, prepTime: false, timerCode: timer2)
-                        .tag(2)
-                    TimerView(speechTitle: "NEG | 1NC", totalTime: 420, prepTime: false, timerCode: timer3)
-                        .tag(3)
-                    TimerView(speechTitle: "NEG | CX", totalTime: 180, prepTime: false, timerCode: timer4)
-                        .tag(4)
+                // Tabview of TimerView instances according to AppState arrays
+                TabView(selection: $AppState.currentTabIndex) {
+                    ForEach(0..<AppState.speechTitles.count, id: \.self) { index in
+                        TimerView(
+                            speechTitle: AppState.speechTitles[index],
+                            totalTime: AppState.speechTimes[index],
+                            timerCode: currentTimer
+                        )
+                        .tag(index)
+                    }
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .padding(.top, -120)
+                .padding(.top, -180)
                 .overlay(
                     swipeAllowed ? nil : Color.clear.contentShape(Rectangle())
                 ) // Invisible overlay blocks swiping according to swipeAllowed
                 .onAppear {
-                    appState.currentTabIndex = 1 // Force first indication for stage indicator
+                    if timers.isEmpty {
+                        timers = AppState.speechTimes.map { TimerCode(totalTime: $0) }
+                    }
+                    AppState.currentTabIndex = 0 // Force first indication for stage indicator
                 }
                 
                 // Reset Button that interacts with current TimerCode instance
@@ -76,7 +74,7 @@ struct LDView: View {
                         .font(.system(size: 20, weight: .light))
                         .foregroundStyle(Color.primary)
                 }
-                .padding(.top, -40)
+                .padding(.top, -50)
 
                 // Start/Stop button that interacts with current TimerCode instance
                 Button(action: {

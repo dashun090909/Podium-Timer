@@ -17,12 +17,12 @@ class TimerCode: ObservableObject {
     
     private var tickIncrement: TimeInterval = 0.01
     
-    private var timerSpeed: Double = 5
+    private var timerSpeed: Double = 100
     
     // Converts time progress for a percentage
     var timerProgress: CGFloat {
         guard totalTime > 0 else { return 1.0 }
-        let adjustedRemaining = max(0, remainingTime) // If remainingTime < 0, treat as 0
+        let adjustedRemaining = max(0, remainingTime) // If remaining time < 0, treat as 0
         return 1.0 - (CGFloat(adjustedRemaining) / CGFloat(totalTime))
     }
     
@@ -47,7 +47,7 @@ class TimerCode: ObservableObject {
             remainingTime = startTime
         }
         
-        // Schedules the timer to call tick every tickIncrement second
+        // Schedules the timer to call tick every tick increment
         timer = Timer.scheduledTimer(withTimeInterval: tickIncrement, repeats: true) { [weak self] _ in self?.tick() }
     }
     

@@ -1,18 +1,49 @@
 import SwiftUI
 
 struct StageIndicatorView: View {
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var AppState: AppState
     
     let pageCount: Int
     let currentPage: Int
+    let speechTypes: [String?]?
     
     var body: some View {
+        // Repeating capsules for each speech
         HStack(spacing: 8) {
-            let baseWidth = 300.0 / (Double(pageCount) + 1.5)
+            let baseWidth = 300.0 / (Double(pageCount) + 1.75)
+            
             ForEach(0..<pageCount, id: \.self) { index in
-                Capsule()
-                    .fill(Color.primary.opacity(index + 1 == currentPage ? 1.0 : 0.4)) // If current page, make opaque
-                    .frame(width: index + 1 == currentPage ? baseWidth * 1.5 : baseWidth, height: 8) // If current page, make larger
+                let isCurrent = index == currentPage
+                let speechType = speechTypes?[index] ?? ""
+                let fillColor: Color = {
+                    switch speechType {
+                    case "AFF", "AFFCX": return Color("AFF")
+                    case "NEG", "NEGCX": return Color("NEG")
+                    default: return Color("primary")
+                    }
+                }()
+                
+                ZStack {
+                    // Base capsule
+                    Capsule()
+                        .fill(fillColor.opacity(isCurrent ? 1.0 : 0.4))
+                        .frame(width: isCurrent ? baseWidth * 1.75 : baseWidth, height: 8)
+                    
+                    // Diagonal strips if CX
+                    if ["AFFCX", "NEGCX"].contains(speechType) {
+                        ZStack {
+                            ForEach(0..<25, id: \.self) { j in
+                                Rectangle()
+                                    .fill(Color("BackgroundColor"))
+                                    .frame(width: 3, height: 200)
+                                    .rotationEffect(.degrees(45))
+                                    .offset(x: CGFloat(j) * 15 - 38)
+                            }
+                        }
+                        .frame(width: isCurrent ? baseWidth * 1.75 : baseWidth, height: 8)
+                        .clipShape(Capsule())
+                    }
+                }
             }
         }
         .animation(.snappy, value: currentPage)
@@ -21,7 +52,10 @@ struct StageIndicatorView: View {
 }
 
 #Preview {
-    StageIndicatorView(pageCount: 7, currentPage: 4)
-        .padding()
-        .environmentObject(AppState())
+    StageIndicatorView(
+        pageCount: 7,
+        currentPage: 4,
+        speechTypes: ["AFF", "AFFCX", "NEG", "NEGCX", "AFF", "NEG", "AFF"]
+    )
+    .environmentObject(AppState())
 }

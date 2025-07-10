@@ -1,17 +1,16 @@
 import SwiftUI
 
 struct TimerView: View {
-    @EnvironmentObject var appState: AppState
+    @EnvironmentObject var AppState: AppState
 
     @ObservedObject var TimerCode: TimerCode
 
-    let speechTitle: String   // Parameter for speechTitle text
+    let speechTitle: String   // Parameter for speech title text
     let totalTime: TimeInterval  // Parameter for total time
-    let prepTime: Bool // Parameter for if timer is prep time
-    init(speechTitle: String, totalTime: TimeInterval, prepTime: Bool, timerCode: TimerCode) {
+    
+    init(speechTitle: String, totalTime: TimeInterval, timerCode: TimerCode) {
         self.speechTitle = speechTitle
         self.totalTime = totalTime
-        self.prepTime = prepTime
         self.TimerCode = timerCode
     }
     
@@ -21,9 +20,43 @@ struct TimerView: View {
         ZStack {
             VStack {
                 // Title
-                Text(speechTitle)
-                    .font(.title.bold())
-                    .padding(20)
+                ZStack {
+                    // Background for AFF/NEG
+                    ZStack {
+                        // Base rectangle
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(
+                                Color(
+                                    AppState.speechTypes[AppState.currentTabIndex] == "AFF" ? "AFF" :
+                                    AppState.speechTypes[AppState.currentTabIndex] == "NEG" ? "NEG" :
+                                    AppState.speechTypes[AppState.currentTabIndex] == "AFFCX" ? "AFF" :
+                                    AppState.speechTypes[AppState.currentTabIndex] == "NEGCX" ? "NEG" :
+                                    "primary"
+                                ).opacity(0.4)
+                            )
+
+                        // Stripes for CX speeches only
+                        if ["AFFCX", "NEGCX"].contains(AppState.speechTypes[AppState.currentTabIndex]) {
+                            ZStack {
+                                ForEach(0..<50, id: \.self) { i in
+                                    Rectangle()
+                                        .fill(Color("BackgroundColor"))
+                                        .frame(width: 15, height: 140)
+                                        .rotationEffect(.degrees(45))
+                                        .offset(x: CGFloat(i) * 60 - 450)
+                                }
+                            }
+                            .frame(width: 1000, height: 70)
+                        }
+                    }
+                    .frame(width: 300, height: 70)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    
+                    // Title text
+                    Text(speechTitle)
+                        .font(.title.bold())
+                }
+                .padding(.bottom, 15)
                                 
                 // Timer circle
                 ZStack {
@@ -75,7 +108,6 @@ struct TimerView: View {
     TimerView(
         speechTitle: "AFF    |    1AC",
         totalTime: 360,
-        prepTime: false,
         timerCode: TimerCode(totalTime: 360)
     )
     .environmentObject(AppState())
