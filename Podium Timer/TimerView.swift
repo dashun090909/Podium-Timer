@@ -49,14 +49,14 @@ struct TimerView: View {
                             .frame(width: 1000, height: 70)
                         }
                     }
-                    .frame(width: 300, height: 70)
+                    .frame(width: 200, height: 70)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     
                     // Title text
                     Text(speechTitle)
                         .font(.title.bold())
                 }
-                .padding(.bottom, 15)
+                .padding(.bottom, 10)
                                 
                 // Timer circle
                 ZStack {
@@ -71,7 +71,7 @@ struct TimerView: View {
                         .stroke(progressColor(), style: StrokeStyle(lineWidth: 12, lineCap: .round))
                         .rotationEffect(Angle(degrees: -90))
                         .shadow(color: progressColor(), radius: 10)
-                        .animation(.linear, value: TimerCode.timerProgress)
+                        .animation(TimerCode.timerRunning ? .linear : nil, value: TimerCode.timerProgress)
                     
                     // Overtime Indiciator
                     Text(TimerCode.overtime ? "OVERTIME" : "")
@@ -106,7 +106,7 @@ struct TimerView: View {
 
 #Preview {
     TimerView(
-        speechTitle: "AFF    |    1AC",
+        speechTitle: "1AC",
         totalTime: 360,
         timerCode: TimerCode(totalTime: 360)
     )

@@ -60,8 +60,8 @@ struct LDView: View {
                 ) // Invisible overlay blocks swiping according to swipeAllowed
                 .onAppear {
                     if timers.isEmpty {
-                        timers = AppState.speechTimes.map { TimerCode(totalTime: $0) }
-                    }
+                        timers = AppState.speechTimes.map { TimerCode(totalTime: $0 * 60) }
+                    } // Add new timers to timer based on map of speech times on first appearance
                     AppState.currentTabIndex = 0 // Force first indication for stage indicator
                 }
                 
