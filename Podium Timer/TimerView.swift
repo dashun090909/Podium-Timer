@@ -71,7 +71,7 @@ struct TimerView: View {
                         .stroke(progressColor(), style: StrokeStyle(lineWidth: 12, lineCap: .round))
                         .rotationEffect(Angle(degrees: -90))
                         .shadow(color: progressColor(), radius: 10)
-                        .animation(TimerCode.timerRunning ? .linear : nil, value: TimerCode.timerProgress)
+                        .animation((TimerCode.timerRunning || TimerCode.resetPeriod) ? .linear : nil, value: TimerCode.timerProgress)
                     
                     // Overtime Indiciator
                     Text(TimerCode.overtime ? "OVERTIME" : "")
@@ -84,6 +84,14 @@ struct TimerView: View {
                     Text(TimerCode.timerAnalog)
                         .font(.system(size: 50, weight: .medium, design: .monospaced))
                         .kerning(3)
+                    
+                    // Speaker Indicator
+                    Text(AppState.speechSpeakers[AppState.currentTabIndex])
+                        .font(.system(size: 17.5, weight: .medium, design: .monospaced))
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.primary.opacity(TimerCode.timerRunning ? 0.2 : 0.75))
+                        .offset(y: 60)
+                        .animation(.easeIn, value: TimerCode.timerRunning)
                 }
                 .frame(width: 300, height: 300)
                 .padding(20)

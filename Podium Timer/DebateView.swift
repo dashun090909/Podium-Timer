@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct LDView: View {
+struct DebateView: View {
     @EnvironmentObject var AppState: AppState
     
     // Array of TimerCode instances for each timer
@@ -107,6 +107,6 @@ struct LDView: View {
 }
 
 #Preview {
-    LDView()
+    DebateView()
         .environmentObject(AppState())
 }

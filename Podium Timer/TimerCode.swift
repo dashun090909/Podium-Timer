@@ -5,6 +5,7 @@ class TimerCode: ObservableObject {
     @Published var remainingTime: TimeInterval = 60
     @Published var timerRunning: Bool = false
     @Published var overtime: Bool = false
+    @Published var resetPeriod: Bool = false
     
     private var timer: Timer?
     private var totalTime: TimeInterval = 60
@@ -17,7 +18,7 @@ class TimerCode: ObservableObject {
     
     private var tickIncrement: TimeInterval = 0.01
     
-    private var timerSpeed: Double = 100
+    private var timerSpeed: Double = 1
     
     // Converts time progress for a percentage
     var timerProgress: CGFloat {
@@ -64,6 +65,12 @@ class TimerCode: ObservableObject {
         stop()
         remainingTime = totalTime
         overtime = false
+        
+        // Set reset period to true for a half second
+        resetPeriod = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.resetPeriod = false
+        }
     }
     
     // Handle a timer tick

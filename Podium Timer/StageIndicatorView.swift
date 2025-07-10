@@ -10,7 +10,7 @@ struct StageIndicatorView: View {
     var body: some View {
         // Repeating capsules for each speech
         HStack(spacing: 8) {
-            let baseWidth = 300.0 / (Double(pageCount) + 1.75)
+            let baseWidth = 270 / (Double(pageCount) + 1.75)
             
             ForEach(0..<pageCount, id: \.self) { index in
                 let isCurrent = index == currentPage
