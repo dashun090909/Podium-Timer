@@ -4,6 +4,7 @@ class AppState: ObservableObject {
     @Published var currentTabIndex: Int = 0
     @Published var currentEvent: String = "Lincoln Douglas"
     @Published var view: String = "EventsView"
+    @Published var timers: [TimerCode] = []
 
     // Dictionary of Events : (Set of times, titles, and types)
     private let eventPresets: [String: (times: [Double], titles: [String], types: [String], speakers: [String], prepTimes: Double)] = [
@@ -77,6 +78,10 @@ class AppState: ObservableObject {
     var speechPrepTimes: Double {
         eventPresets[currentEvent]?.prepTimes ?? 0
     }
+
+    func resetTimers() {
+        self.timers = self.speechTimes.map { TimerCode(totalTime: $0 * 60) }
+    }
 }
 
 @main
@@ -85,14 +90,8 @@ struct Podium_TimerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            switch appState.view {
-            case "DebateView":
-                DebateView()
-                    .environmentObject(appState)
-            default:
-                EventsView()
-                    .environmentObject(appState)
-            }
+            MainView()
+                .environmentObject(appState)
         }
     }
 }

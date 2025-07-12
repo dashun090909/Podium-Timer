@@ -38,219 +38,21 @@ struct EventsView: View {
 
                 ScrollView {
                     VStack(spacing: 20) {
-                        Button(action: {
-                            navigate(event: "Big Questions")
-                        }) {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color("RegressedColor"))
-                                    .frame(height: 95)
-                                    .overlay(
-                                        Text("BQ")
-                                            .font(.system(size: 160, weight: .bold))
-                                            .foregroundColor(Color.primary.opacity(0.05))
-                                            .rotationEffect(.degrees(20))
-                                            .offset(x: -60)
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                                HStack {
-                                    Text("Big Questions")
-                                        .font(.title)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.primary)
-                                        .fontWeight(.bold)
-                                }
-                                .padding(.horizontal, 30)
-                            }
-                        }
+                        EventButton(eventTitle: "Big Questions", backgroundText: "BQ", backgroundTextOffset: -60, event: "Big Questions")
                         
-                        Button(action: {
-                            navigate(event: "Congress")
-                        }) {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color("RegressedColor"))
-                                    .frame(height: 95)
-                                    .overlay(
-                                        Text("Con")
-                                            .font(.system(size: 160, weight: .bold))
-                                            .foregroundColor(Color.primary.opacity(0.05))
-                                            .rotationEffect(.degrees(20))
-                                            .offset(x: -60)
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                                HStack {
-                                    Text("Congress Speech")
-                                        .font(.title)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.primary)
-
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.primary)
-                                        .fontWeight(.bold)
-                                }
-                                .padding(.horizontal, 30)
-                            }
-                        }
+                        EventButton(eventTitle: "Student Congress", backgroundText: "Con", backgroundTextOffset: -60, event: "Congress")
                         
-                        Button(action: {
-                            navigate(event: "Lincoln Douglas")
-                        }) {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color("RegressedColor"))
-                                    .frame(height: 95)
-                                    .overlay(
-                                        Text("LD")
-                                            .font(.system(size: 160, weight: .bold))
-                                            .foregroundColor(Color.primary.opacity(0.05))
-                                            .rotationEffect(.degrees(20))
-                                            .offset(x: -60)
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                                HStack {
-                                    Text("Lincoln Douglas")
-                                        .font(.title)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.primary)
-                                        .fontWeight(.bold)
-                                }
-                                .padding(.horizontal, 30)
-                            }
-                        }
+                        EventButton(eventTitle: "Lincoln Douglas", backgroundText: "LD", backgroundTextOffset: -60, event: "Lincoln Douglas")
                         
-                        Button(action: {
-                            navigate(event: "Parlimentary")
-                        }) {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color("RegressedColor"))
-                                    .frame(height: 95)
-                                    .overlay(
-                                        Text("Parli")
-                                            .font(.system(size: 160, weight: .bold))
-                                            .foregroundColor(Color.primary.opacity(0.05))
-                                            .rotationEffect(.degrees(20))
-                                            .offset(x: -80)
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                                HStack {
-                                    Text("Parlimentary")
-                                        .font(.title)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.primary)
-                                        .fontWeight(.bold)
-                                }
-                                .padding(.horizontal, 30)
-                            }
-                        }
-
-                        Button(action: {
-                            navigate(event: "Policy")
-                        }) {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color("RegressedColor"))
-                                    .frame(height: 95)
-                                    .overlay(
-                                        Text("CX")
-                                            .font(.system(size: 160, weight: .bold))
-                                            .foregroundColor(Color.primary.opacity(0.05))
-                                            .rotationEffect(.degrees(20))
-                                            .offset(x: -80)
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                                HStack {
-                                    Text("Policy")
-                                        .font(.title)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.primary)
-                                        .fontWeight(.bold)
-                                }
-                                .padding(.horizontal, 30)
-                            }
-                        }
-
-                        Button(action: {
-                            navigate(event: "Public Forum")
-                        }) {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color("RegressedColor"))
-                                    .frame(height: 95)
-                                    .overlay(
-                                        Text("PF")
-                                            .font(.system(size: 160, weight: .bold))
-                                            .foregroundColor(Color.primary.opacity(0.05))
-                                            .rotationEffect(.degrees(20))
-                                            .offset(x: -80)
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                                HStack {
-                                    Text("Public Forum")
-                                        .font(.title)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.primary)
-                                        .fontWeight(.bold)
-                                }
-                                .padding(.horizontal, 30)
-                            }
-                        }
+                        EventButton(eventTitle: "Parlimentary", backgroundText: "Parli", backgroundTextOffset: -80, event: "Parlimentary")
                         
-                        Button(action: {
-                            navigate(event: "World Schools")
-                        }) {
-                            ZStack(alignment: .leading) {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(Color("RegressedColor"))
-                                    .frame(height: 95)
-                                    .overlay(
-                                        Text("WS")
-                                            .font(.system(size: 160, weight: .bold))
-                                            .foregroundColor(Color.primary.opacity(0.05))
-                                            .rotationEffect(.degrees(20))
-                                            .offset(x: -80)
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                        EventButton(eventTitle: "Policy", backgroundText: "CX", backgroundTextOffset: -80, event: "Policy")
+                        
+                        EventButton(eventTitle: "Public Forum", backgroundText: "PF", backgroundTextOffset: -80, event: "Public Forum")
+                        
+                        EventButton(eventTitle: "World Schools", backgroundText: "WS", backgroundTextOffset: -80, event: "World Schools")
 
-                                HStack {
-                                    Text("World Schools")
-                                        .font(.title)
-                                        .fontWeight(.semibold)
-                                        .foregroundColor(.primary)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .foregroundColor(.primary)
-                                        .fontWeight(.bold)
-                                }
-                                .padding(.horizontal, 30)
-                            }
-                        }
-            
                         Spacer()
-                        
                         Spacer()
                     }
                     .offset(y: 20)
@@ -279,14 +81,63 @@ struct EventsView: View {
                 endPoint: .top
             )
             .frame(height: 40)
-            .offset(y: 690)
+            .offset(y: 700)
         }
+        .preferredColorScheme(.dark)
     }
+}
 
-    func navigate(event: String) {
-        AppState.currentEvent = event
-        AppState.currentTabIndex = 0
-        AppState.view = "DebateView"
+struct EventButton: View {
+    @EnvironmentObject var AppState: AppState
+    var eventTitle: String
+    var backgroundText: String
+    var backgroundTextOffset: CGFloat
+    var event: String
+
+    @State private var isPressed = false
+
+    var body: some View {
+        Button(action: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                AppState.currentEvent = event
+                AppState.currentTabIndex = 0
+                AppState.resetTimers()
+                AppState.view = "DebateView"
+            }
+        }) {
+            ZStack(alignment: .leading) {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color("RegressedColor"))
+                    .frame(height: 95)
+                    .overlay(
+                        Text(backgroundText)
+                            .font(.system(size: 160, weight: .bold))
+                            .foregroundColor(Color.primary.opacity(0.05))
+                            .rotationEffect(.degrees(20))
+                            .offset(x: backgroundTextOffset)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+
+                HStack {
+                    Text(eventTitle)
+                        .font(.title)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.primary)
+                        .fontWeight(.bold)
+                }
+                .padding(.horizontal, 30)
+            }
+        }
+        .scaleEffect(isPressed ? 0.96 : 1.0)
+        .animation(.spring(response: 0.3, dampingFraction: 0.5), value: isPressed)
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in isPressed = true }
+                .onEnded { _ in isPressed = false }
+        )
     }
 }
 

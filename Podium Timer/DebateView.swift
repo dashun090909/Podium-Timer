@@ -2,16 +2,21 @@ import SwiftUI
 
 struct DebateView: View {
     @EnvironmentObject var AppState: AppState
-    
-    // Array of TimerCode instances for each timer
-    @State private var timers: [TimerCode] = []
-    
+
     // Overtime pulse state for background animation
     @State private var overtimePulse: Bool = true
-    
+
     // State variable for swipe locking when timer is running
     @State private var swipeAllowed: Bool = true
-    
+
+    // Confirmation alert state
+    @State private var showEndRoundConfirmation: Bool = false
+
+    // Computed property for shared timers
+    var timers: [TimerCode] {
+        AppState.timers
+    }
+
     // Finds current timer according to current tab index
     var currentTimer: TimerCode {
         guard AppState.currentTabIndex < timers.count else {
@@ -21,9 +26,6 @@ struct DebateView: View {
     }
 
     var body: some View {
-        Text("Loaded DebateView with \(AppState.speechTitles.count) titles")
-            .foregroundColor(.white)
-        
         ZStack {
             // Overtime background pulse
             Rectangle()
@@ -39,7 +41,7 @@ struct DebateView: View {
                         overtimePulse = true
                     }
                 }} // Animation timer to manipulate overtime pulse
-            
+
             VStack {
                 Spacer()
                 
@@ -47,10 +49,8 @@ struct DebateView: View {
                 HStack {
                     // End Round Button
                     Button(action: {
-                        // Reset all timers
-                        timers = []
-                        AppState.currentTabIndex = 0
-                        AppState.view = "EventsView"
+                        // Triggers end round confirmation
+                        showEndRoundConfirmation = true
                     }) {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
@@ -63,8 +63,12 @@ struct DebateView: View {
                     .offset(x: 30)
 
                     Spacer()
-
+                    
+                    // Save Button
                     Button(action: {
+                        if AppState.timers.isEmpty {
+                            AppState.timers = AppState.speechTimes.map { TimerCode(totalTime: $0 * 60) }
+                        } // Add new timers to timer based on map of speech times on first appearance
                     }) {
                         Text("Save")
                             .font(.system(size:20, weight: .light))
@@ -73,12 +77,11 @@ struct DebateView: View {
                     .offset(x: -40)
                 }
                 .padding(.horizontal)
-                .offset(y: 65)
+                .offset(y: 72.5)
                 
                 // Stage Indicator
                 StageIndicatorView(pageCount: AppState.speechTitles.count, currentPage: AppState.currentTabIndex, speechTypes: AppState.speechTypes)
                     .offset(y: 75)
-
                 
                 // Tabview of TimerView instances according to AppState arrays
                 TabView(selection: $AppState.currentTabIndex) {
@@ -91,16 +94,11 @@ struct DebateView: View {
                         .tag(index)
                     }
                 }
+                .animation(.linear, value: timers.count)
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .overlay(
                     swipeAllowed ? nil : Color.clear.contentShape(Rectangle())
                 ) // Invisible overlay blocks swiping according to swipeAllowed
-                .onAppear {
-                    if timers.isEmpty {
-                        timers = AppState.speechTimes.map { TimerCode(totalTime: $0 * 60) }
-                    } // Add new timers to timer based on map of speech times on first appearance
-                    AppState.currentTabIndex = 0 // Force first indication for stage indicator
-                }
                 .padding(10)
                 .offset(y:20)
                 
@@ -136,15 +134,30 @@ struct DebateView: View {
                 }
                 .contentShape(Circle())
                 .padding(.bottom, 110)
-                
             }
         }
         .background(Color("BackgroundColor").ignoresSafeArea())
         .preferredColorScheme(.dark)
+        // End round alert
+        .alert(isPresented: $showEndRoundConfirmation) {
+            Alert(
+                title: Text("End Round?"),
+                message: Text("Are you sure you want to return to the event selection screen?"),
+                primaryButton: .destructive(Text("End Round")) {
+                    AppState.timers = []
+                    AppState.currentTabIndex = 0
+                    withAnimation {
+                        AppState.view = "EventsView"
+                    }
+                },
+                secondaryButton: .cancel()
+            )
+        }
     }
 }
 
-#Preview {
-    DebateView()
-        .environmentObject(AppState())
+struct DebateView_Previews: PreviewProvider {
+    static var previews: some View {
+        DebateView().environmentObject(AppState())
+    }
 }
