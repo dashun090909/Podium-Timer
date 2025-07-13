@@ -3,6 +3,9 @@ import SwiftUI
 struct StageIndicatorView: View {
     @EnvironmentObject var AppState: AppState
     
+    @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
+    @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
+    
     let pageCount: Int
     let currentPage: Int
     let speechTypes: [String?]?
@@ -17,8 +20,8 @@ struct StageIndicatorView: View {
                 let speechType = speechTypes?[index] ?? ""
                 let fillColor: Color = {
                     switch speechType {
-                    case "AFF", "AFFCX": return Color("AFF")
-                    case "NEG", "NEGCX": return Color("NEG")
+                    case "AFF", "AFFCX": return Color(hex: affColorHex)
+                    case "NEG", "NEGCX": return Color(hex: negColorHex)
                     default: return Color.primary
                     }
                 }()

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct EventsView: View {
     @EnvironmentObject var AppState: AppState
+    @AppStorage("theme") private var theme: String = "Dark"
     
     @State private var settingsIconRotation = 0
 
@@ -93,7 +94,6 @@ struct EventsView: View {
                         VStack {
                             Spacer()
                             SettingsView()
-                                .shadow(radius: 10)
                             Spacer()
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -9,8 +9,10 @@ struct SettingsView: View {
     @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = true
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
-    @AppStorage("warningThreshold") private var warningThreshold: Int = 60
-    @AppStorage("dangerThreshold") private var dangerThreshold: Int = 30
+    @AppStorage("warningThreshold") private var warningThreshold: Int = 30
+    @AppStorage("dangerThreshold") private var dangerThreshold: Int = 10
+
+    @State private var showingResetAlert = false
 
     @State private var warningMinutes: Int = 0
     @State private var warningSeconds: Int = 30
@@ -60,7 +62,7 @@ struct SettingsView: View {
 
             // Reset to Defaults Button
             Button("Reset to Defaults") {
-                resetToDefaults()
+                showingResetAlert = true
             }
             .font(.subheadline)
             .foregroundColor(.red)
@@ -68,6 +70,14 @@ struct SettingsView: View {
             .padding(.vertical, 10)
             .background(RoundedRectangle(cornerRadius: 12).fill(Color("RegressedColor").opacity(0.5)))
             .padding(.bottom, 10)
+            .alert("Reset to Defaults", isPresented: $showingResetAlert) {
+                Button("Reset", role: .destructive) {
+                    resetToDefaults()
+                }
+                Button("Cancel", role: .cancel) { }
+            } message: {
+                Text("Reset all settings to default?")
+            }
                         
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {

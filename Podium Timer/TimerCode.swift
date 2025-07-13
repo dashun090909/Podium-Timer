@@ -18,7 +18,7 @@ class TimerCode: ObservableObject {
     
     private var tickIncrement: TimeInterval = 0.01
     
-    private var timerSpeed: Double = 1
+    private var timerSpeed: Double = 60
     
     // Converts time progress for a percentage
     var timerProgress: CGFloat {

@@ -2,7 +2,9 @@ import SwiftUI
 
 struct DebateView: View {
     @EnvironmentObject var AppState: AppState
-
+    @AppStorage("theme") private var theme: String = "Dark"
+    @AppStorage("overtimeFlashEnabled") private var overtimeFlashEnabled: Bool = true
+    
     // Overtime pulse state for background animation
     @State private var overtimePulse: Bool = true
 
@@ -31,16 +33,21 @@ struct DebateView: View {
             Rectangle()
                 .frame(width: UIScreen.main.bounds.width + 50, height: UIScreen.main.bounds.height + 50)
                 .foregroundStyle(Color(currentTimer.overtime ? "OvertimeRed" : "BackgroundColor"))
-                .animation(.easeInOut(duration: 0.3), value: currentTimer.overtime)
-                .opacity(currentTimer.overtime ? (overtimePulse ? 1 : 0) : 0)
+                .opacity(
+                    currentTimer.overtime && overtimeFlashEnabled
+                    ? (overtimePulse ? 1 : 0)
+                    : 0
+                )
                 .animation(.easeInOut(duration: 0.5), value: overtimePulse)
-                .onAppear() {Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
-                    if currentTimer.overtime {
-                        overtimePulse.toggle()
-                    } else {
-                        overtimePulse = true
+                .onAppear {
+                    Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
+                        if currentTimer.overtime && overtimeFlashEnabled {
+                            overtimePulse.toggle()
+                        } else {
+                            overtimePulse = true
+                        }
                     }
-                }} // Animation timer to manipulate overtime pulse
+                }
 
             VStack {
                 Spacer()
@@ -137,7 +144,6 @@ struct DebateView: View {
             }
         }
         .background(Color("BackgroundColor").ignoresSafeArea())
-        .preferredColorScheme(.dark)
         // End round alert
         .alert(isPresented: $showEndRoundConfirmation) {
             Alert(

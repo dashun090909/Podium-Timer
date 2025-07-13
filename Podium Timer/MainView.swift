@@ -3,6 +3,8 @@ import SwiftUI
 struct MainView: View {
     @EnvironmentObject var AppState: AppState
 
+    @AppStorage("theme") private var theme: String = "Dark"
+    
     var body: some View {
         ZStack {
             if AppState.view == "DebateView" {
@@ -19,6 +21,7 @@ struct MainView: View {
                     ))
             }
         }
+        .preferredColorScheme(theme == "Dark" ? .dark : .light)
         .animation(.interactiveSpring(response: 0.5, dampingFraction: 0.8), value: AppState.view)
     }
 }
