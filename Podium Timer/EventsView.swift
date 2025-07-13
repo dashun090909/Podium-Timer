@@ -24,6 +24,7 @@ struct EventsView: View {
 
                     Button(action: {
                         withAnimation(.easeInOut(duration: 0.3)) {
+                            AppState.settings = true
                             settingsIconRotation += 45
                         }
                     }) {
@@ -82,8 +83,27 @@ struct EventsView: View {
             )
             .frame(height: 40)
             .offset(y: 700)
+            
+            // Settings overlay
+            ZStack {
+                if AppState.settings {
+                    ZStack {
+                        Color.black.opacity(0.7).ignoresSafeArea()
+                        
+                        VStack {
+                            Spacer()
+                            SettingsView()
+                                .shadow(radius: 10)
+                            Spacer()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    .transition(.opacity)
+                    .zIndex(1)
+                }
+            }
+            .animation(.easeInOut(duration: 0.3), value: AppState.settings)
         }
-        .preferredColorScheme(.dark)
     }
 }
 
@@ -141,8 +161,7 @@ struct EventButton: View {
     }
 }
 
-struct EventsView_Previews: PreviewProvider {
-    static var previews: some View {
-        EventsView().environmentObject(AppState())
-    }
+#Preview {
+        EventsView()
+            .environmentObject(AppState())
 }

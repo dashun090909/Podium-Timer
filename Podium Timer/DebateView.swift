@@ -127,7 +127,7 @@ struct DebateView: View {
                         .frame(width: 110, height: 110)
                         .background {
                             Circle()
-                                .fill(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen").opacity(0.2))
+                                .fill(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen").opacity(0.1 ))
                         }
                         .font(.system(size: 25, weight: .light))
                         .foregroundStyle(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen"))
@@ -156,8 +156,8 @@ struct DebateView: View {
     }
 }
 
-struct DebateView_Previews: PreviewProvider {
-    static var previews: some View {
-        DebateView().environmentObject(AppState())
-    }
+#Preview {
+        DebateView()
+            .environmentObject(AppState())
 }
+

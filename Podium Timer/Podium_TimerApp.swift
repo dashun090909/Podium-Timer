@@ -4,6 +4,7 @@ class AppState: ObservableObject {
     @Published var currentTabIndex: Int = 0
     @Published var currentEvent: String = "Lincoln Douglas"
     @Published var view: String = "EventsView"
+    @Published var settings: Bool = false
     @Published var timers: [TimerCode] = []
 
     // Dictionary of Events : (Set of times, titles, and types)

@@ -23,9 +23,7 @@ struct MainView: View {
     }
 }
 
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
         MainView()
             .environmentObject(AppState())
-    }
 }
