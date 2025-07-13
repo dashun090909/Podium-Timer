@@ -4,6 +4,9 @@ struct DebateView: View {
     @EnvironmentObject var AppState: AppState
     @AppStorage("theme") private var theme: String = "Dark"
     @AppStorage("overtimeFlashEnabled") private var overtimeFlashEnabled: Bool = true
+    @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
+    @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
+    @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
     
     // Overtime pulse state for background animation
     @State private var overtimePulse: Bool = true
@@ -65,9 +68,11 @@ struct DebateView: View {
                             Text("End Round")
                                 .font(.system(size: 20, weight: .light))
                         }
-                        .foregroundColor(.primary.opacity(0.7))
+                        .foregroundColor(.primary.opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8))
                     }
                     .offset(x: 30)
+                    .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
+                    .animation(.default, value: currentTimer.timerRunning)
 
                     Spacer()
                     
@@ -79,15 +84,20 @@ struct DebateView: View {
                     }) {
                         Text("Save")
                             .font(.system(size:20, weight: .light))
-                        .foregroundColor(.primary.opacity(0.7))
+                        .foregroundColor(.primary.opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.7))
                     }
                     .offset(x: -40)
+                    .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
+                    .animation(.default, value: currentTimer.timerRunning)
                 }
                 .padding(.horizontal)
                 .offset(y: 72.5)
                 
                 // Stage Indicator
                 StageIndicatorView(pageCount: AppState.speechTitles.count, currentPage: AppState.currentTabIndex, speechTypes: AppState.speechTypes)
+                    .environmentObject(currentTimer)
+                    .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.05 : 1.0)
+                    .animation(.easeInOut, value: currentTimer.timerRunning)
                     .offset(y: 75)
                 
                 // Tabview of TimerView instances according to AppState arrays
@@ -107,19 +117,24 @@ struct DebateView: View {
                     swipeAllowed ? nil : Color.clear.contentShape(Rectangle())
                 ) // Invisible overlay blocks swiping according to swipeAllowed
                 .padding(10)
-                .offset(y:20)
                 
                 // Reset Button that interacts with current TimerCode instance
                 Button(action: {
-                    currentTimer.reset()
-                    swipeAllowed = true
+                    if !currentTimer.timerRunning {
+                        currentTimer.reset()
+                        swipeAllowed = true
+                    }
                 }) {
                     Text("Reset")
                         .font(.system(size: 20, weight: .light))
                         .foregroundStyle(Color.primary)
+                        .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
                 }
-                .offset(y: -20)
+                .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
+                .offset(y: -65)
+                
 
+                
                 // Start/Stop button that interacts with current TimerCode instance
                 Button(action: {
                     if currentTimer.timerRunning {
@@ -134,14 +149,47 @@ struct DebateView: View {
                         .frame(width: 110, height: 110)
                         .background {
                             Circle()
-                                .fill(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen").opacity(0.1 ))
+                                .fill(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen").opacity(0.1))
                         }
                         .font(.system(size: 25, weight: .light))
                         .foregroundStyle(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen"))
                 }
                 .contentShape(Circle())
-                .padding(.bottom, 110)
+                .padding(.bottom, 90)
             }
+            
+            // Prep time buttons
+            HStack {
+                Button(action: {
+                    // AFF prep time button action
+                }) {
+                    Text("Prep\n4:00")
+                        .font(.system(size: 20, weight: .semibold))
+                        .kerning(2)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color(hex: affColorHex))
+                        .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
+                        .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
+                        .animation(.default, value: currentTimer.timerRunning)
+                }
+                
+                Spacer()
+                
+                Button(action: {
+                    // NEG prep time button action
+                }) {
+                    Text("Prep\n4:00")
+                        .font(.system(size: 20, weight: .semibold))
+                        .kerning(2)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color(hex: negColorHex))
+                        .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
+                        .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
+                        .animation(.default, value: currentTimer.timerRunning)
+                }
+            }
+            .padding(75)
+            .offset(y: 210)
         }
         .background(Color("BackgroundColor").ignoresSafeArea())
         // End round alert
@@ -166,4 +214,3 @@ struct DebateView: View {
         DebateView()
             .environmentObject(AppState())
 }
-

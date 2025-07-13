@@ -9,6 +9,7 @@ struct TimerView: View {
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
     @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = true
+    @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
 
     let speechTitle: String   // Parameter for speech title text
     let totalTime: TimeInterval  // Parameter for total time
@@ -60,7 +61,8 @@ struct TimerView: View {
                     Text(speechTitle)
                         .font(.title.bold())
                 }
-                .padding(.bottom, 10)
+                .opacity(TimerCode.timerRunning && timerStageDimmingEnabled ? 0.1 : 1.0)
+                .animation(.easeInOut, value: TimerCode.timerRunning)
                                 
                 // Timer circle
                 ZStack {
@@ -94,13 +96,13 @@ struct TimerView: View {
                         Text(AppState.speechSpeakers[AppState.currentTabIndex])
                             .font(.system(size: 17.5, weight: .medium, design: .monospaced))
                             .multilineTextAlignment(.center)
-                            .foregroundStyle(.primary.opacity((TimerCode.timerRunning ? 0.2 : 0.75) * (speakerIdentifierEnabled ? 1 : 0)))
+                            .foregroundStyle(.primary.opacity((TimerCode.timerRunning ? 0.1 : 0.75) * (speakerIdentifierEnabled ? 1 : 0)))
                             .offset(y: 60)
                             .animation(.easeIn, value: TimerCode.timerRunning)
                     }
                 }
                 .frame(width: 290, height: 300)
-                .padding(20)
+                .padding(10)
             }
         }
     }
