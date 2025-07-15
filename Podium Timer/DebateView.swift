@@ -7,6 +7,8 @@ struct DebateView: View {
     @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
+    @AppStorage("prepTimeAFF") private var prepTimeAFF: Int = 240
+    @AppStorage("prepTimeNEG") private var prepTimeNEG: Int = 240
     
     // Overtime pulse state for background animation
     @State private var overtimePulse: Bool = true
@@ -190,6 +192,15 @@ struct DebateView: View {
             }
             .padding(75)
             .offset(y: 210)
+        }
+        .onAppear {
+            Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
+                if currentTimer.overtime && overtimeFlashEnabled {
+                    overtimePulse.toggle()
+                } else {
+                    overtimePulse = true
+                }
+            }
         }
         .background(Color("BackgroundColor").ignoresSafeArea())
         // End round alert

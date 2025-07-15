@@ -6,6 +6,8 @@ class AppState: ObservableObject {
     @Published var view: String = "EventsView"
     @Published var settings: Bool = false
     @Published var timers: [TimerCode] = []
+    @Published var prepTimeAFF: Int = 240
+    @Published var prepTimeNEG: Int = 240
 
     // Dictionary of Events : (Set of times, titles, and types)
     private let eventPresets: [String: (times: [Double], titles: [String], types: [String], speakers: [String], prepTime: Double)] = [

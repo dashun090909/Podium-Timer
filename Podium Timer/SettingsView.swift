@@ -10,6 +10,10 @@ struct SettingsView: View {
     @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
+    @AppStorage("warningColorHexLight") private var warningColorHexLight: String = "#C42329"
+    @AppStorage("warningColorHexDark") private var warningColorHexDark: String = "#C42329"
+    @AppStorage("dangerColorHexLight") private var dangerColorHexLight: String = "#C42329"
+    @AppStorage("dangerColorHexDark") private var dangerColorHexDark: String = "#C42329"
     @AppStorage("warningThreshold") private var warningThreshold: Int = 30
     @AppStorage("dangerThreshold") private var dangerThreshold: Int = 10
 
@@ -17,8 +21,6 @@ struct SettingsView: View {
 
     @State private var warningMinutes: Int = 0
     @State private var warningSeconds: Int = 30
-    @State private var dangerMinutes: Int = 0
-    @State private var dangerSeconds: Int = 10
     @State private var showingWarningPicker = false
     @State private var showingDangerPicker = false
 
@@ -139,8 +141,27 @@ struct SettingsView: View {
                     }
                     .padding(20)
                     .background(RoundedRectangle(cornerRadius: 12).fill(Color("RegressedColor").opacity(0.5)))
+                    // Warning threshold time picker
                     .sheet(isPresented: $showingWarningPicker) {
                         VStack {
+                            ZStack {
+                                Text("Yellow Warning Threshold")
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+
+                                HStack {
+                                    Spacer()
+                                    Button(action: { showingWarningPicker = false }) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.title2)
+                                            .foregroundColor(.white)
+                                            .opacity(0.6)
+                                    }
+                                    .padding(.trailing, 20)
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.top)
                             Picker("Minutes", selection: Binding(get: {
                                 warningThreshold / 60
                             }, set: {
@@ -161,8 +182,27 @@ struct SettingsView: View {
                         .padding()
                         .presentationDetents([.height(300)])
                     }
+                    // Danger threshold time picker
                     .sheet(isPresented: $showingDangerPicker) {
                         VStack {
+                            ZStack {
+                                Text("Danger Threshold")
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+
+                                HStack {
+                                    Spacer()
+                                    Button(action: { showingDangerPicker = false }) {
+                                        Image(systemName: "checkmark.circle.fill")
+                                            .font(.title2)
+                                            .foregroundColor(.white)
+                                            .opacity(0.6)
+                                    }
+                                    .padding(.trailing, 20)
+                                }
+                            }
+                            .frame(maxWidth: .infinity)
+                            .padding(.top)
                             Picker("Minutes", selection: Binding(get: {
                                 dangerThreshold / 60
                             }, set: {
