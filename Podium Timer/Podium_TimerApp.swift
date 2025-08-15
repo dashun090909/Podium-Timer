@@ -78,7 +78,7 @@ class AppState: ObservableObject {
         eventPresets[currentEvent]?.speakers ?? []
     }
     
-    var speechprepTime: Double {
+    var eventPrepTime: Double {
         eventPresets[currentEvent]?.prepTime ?? 0
     }
 

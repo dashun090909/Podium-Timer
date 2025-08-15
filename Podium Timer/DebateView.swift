@@ -133,7 +133,7 @@ struct DebateView: View {
                         .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
                 }
                 .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
-                .offset(y: -65)
+                .offset(y: AppState.eventPrepTime > 0 ? -75 : -50)
                 
 
                 
@@ -158,6 +158,7 @@ struct DebateView: View {
                 }
                 .contentShape(Circle())
                 .padding(.bottom, 90)
+                .offset(y: AppState.eventPrepTime > 0 ? 0 : -30)
             }
             
             // Prep time buttons
@@ -170,8 +171,8 @@ struct DebateView: View {
                         .kerning(2)
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(hex: affColorHex))
-                        .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
-                        .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
+                        .opacity(AppState.eventPrepTime > 0 ? (currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8) : 0.0)
+                        .allowsHitTesting(AppState.eventPrepTime > 0 && !(currentTimer.timerRunning && timerStageDimmingEnabled))
                         .animation(.default, value: currentTimer.timerRunning)
                 }
                 
@@ -185,8 +186,8 @@ struct DebateView: View {
                         .kerning(2)
                         .multilineTextAlignment(.center)
                         .foregroundColor(Color(hex: negColorHex))
-                        .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
-                        .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
+                        .opacity(AppState.eventPrepTime > 0 ? (currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8) : 0.0)
+                        .allowsHitTesting(AppState.eventPrepTime > 0 && !(currentTimer.timerRunning && timerStageDimmingEnabled))
                         .animation(.default, value: currentTimer.timerRunning)
                 }
             }
