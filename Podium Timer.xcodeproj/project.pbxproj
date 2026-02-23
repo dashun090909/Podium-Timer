@@ -29,19 +29,35 @@
 		932B3BDA2CF7FF7B00AF503D /* Podium TimerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Podium TimerUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		93E477342EEDF47D0037AD4D /* Exceptions for "Podium TimerUITests" folder in "Podium TimerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Podium TimerTests/Podium_TimerTests.swift",
+			);
+			target = 932B3BCF2CF7FF7B00AF503D /* Podium TimerTests */;
+		};
+		93E477352EEDF47D0037AD4D /* Exceptions for "Podium TimerUITests" folder in "Podium TimerUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Podium TimerTests/Podium_TimerTests.swift",
+			);
+			target = 932B3BD92CF7FF7B00AF503D /* Podium TimerUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		932B3BC22CF7FF7900AF503D /* Podium Timer */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Podium Timer";
 			sourceTree = "<group>";
 		};
-		932B3BD32CF7FF7B00AF503D /* Podium TimerTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "Podium TimerTests";
-			sourceTree = "<group>";
-		};
 		932B3BDD2CF7FF7B00AF503D /* Podium TimerUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				93E477342EEDF47D0037AD4D /* Exceptions for "Podium TimerUITests" folder in "Podium TimerTests" target */,
+				93E477352EEDF47D0037AD4D /* Exceptions for "Podium TimerUITests" folder in "Podium TimerUITests" target */,
+			);
 			path = "Podium TimerUITests";
 			sourceTree = "<group>";
 		};
@@ -76,7 +92,6 @@
 			isa = PBXGroup;
 			children = (
 				932B3BC22CF7FF7900AF503D /* Podium Timer */,
-				932B3BD32CF7FF7B00AF503D /* Podium TimerTests */,
 				932B3BDD2CF7FF7B00AF503D /* Podium TimerUITests */,
 				932B3BC12CF7FF7900AF503D /* Products */,
 			);
@@ -130,9 +145,6 @@
 			dependencies = (
 				932B3BD22CF7FF7B00AF503D /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				932B3BD32CF7FF7B00AF503D /* Podium TimerTests */,
-			);
 			name = "Podium TimerTests";
 			packageProductDependencies = (
 			);
@@ -171,7 +183,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1610;
-				LastUpgradeCheck = 1640;
+				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					932B3BBF2CF7FF7900AF503D = {
 						CreatedOnToolsVersion = 16.1;
@@ -328,6 +340,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -385,6 +398,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};

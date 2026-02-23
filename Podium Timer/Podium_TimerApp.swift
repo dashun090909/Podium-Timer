@@ -6,8 +6,8 @@ class AppState: ObservableObject {
     @Published var view: String = "EventsView"
     @Published var settings: Bool = false
     @Published var timers: [TimerCode] = []
-    @Published var prepTimeAFF: Int = 240
-    @Published var prepTimeNEG: Int = 240
+    @AppStorage("prepTimeAFF") var prepTimeAFF: Int = 240
+    @AppStorage("prepTimeNEG") var prepTimeNEG: Int = 240
 
     // Dictionary of Events : (Set of times, titles, and types)
     private let eventPresets: [String: (times: [Double], titles: [String], types: [String], speakers: [String], prepTime: Double)] = [
@@ -18,7 +18,7 @@ class AppState: ObservableObject {
             speakers: [],
             prepTime: 3
         ),
-        "Congress": (
+        "Student Congress": (
             times: [3, 1],
             titles: ["Speech", "Cross-Examination"],
             types: ["AFF", "CX"],
@@ -33,8 +33,8 @@ class AppState: ObservableObject {
             prepTime: 4
         ),
         "Parlimentary": (
-            times: [7, 8, 8, 8, 4, 5],
-            titles: ["1st AFF Constructive", "1st NEG Constructive", "2nd AFF Constructive", "2nd NEG Constructive", "NEG Rebuttal", "AFF Rebuttal"],
+            times: [7, 7, 7, 7, 5, 5],
+            titles: ["1st PROP", "1st OPP", "2nd PROP", "2nd OPP", "3rd OPP", "3rd PROP"],
             types: ["AFF", "NEG", "AFF", "NEG", "NEG", "AFF"],
             speakers: ["1st AFF Speaker", "1st NEG Speaker", "2nd AFF Speaker", "2nd NEG Speaker", "1st NEG Speaker", "1st AFF Speaker"],
             prepTime: 0
@@ -83,7 +83,12 @@ class AppState: ObservableObject {
     }
 
     func resetTimers() {
+        // Initialize speech timers
         self.timers = self.speechTimes.map { TimerCode(totalTime: $0 * 60) }
+        // Initialize prep time for both sides from event preset (minutes -> seconds)
+        let seconds = Int(self.eventPrepTime * 60)
+        self.prepTimeAFF = seconds
+        self.prepTimeNEG = seconds
     }
 }
 
@@ -98,3 +103,4 @@ struct Podium_TimerApp: App {
         }
     }
 }
+

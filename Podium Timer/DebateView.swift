@@ -19,6 +19,10 @@ struct DebateView: View {
     // Confirmation alert state
     @State private var showEndRoundConfirmation: Bool = false
 
+    // New state variables for sheet presentation
+    @State private var showAffPrep: Bool = false
+    @State private var showNegPrep: Bool = false
+
     // Computed property for shared timers
     var timers: [TimerCode] {
         AppState.timers
@@ -30,6 +34,12 @@ struct DebateView: View {
             return TimerCode(totalTime: 0)
         }
         return timers[AppState.currentTabIndex]
+    }
+    
+    private func formatMMSS(_ seconds: Int) -> String {
+        let minutes = seconds / 60
+        let secs = seconds % 60
+        return String(format: "%d:%02d", minutes, secs)
     }
 
     var body: some View {
@@ -57,7 +67,7 @@ struct DebateView: View {
             VStack {
                 Spacer()
                 
-                // Top bar with End Round and Save buttons
+                // Top bar with End Round button
                 HStack {
                     // End Round Button
                     Button(action: {
@@ -77,20 +87,6 @@ struct DebateView: View {
                     .animation(.default, value: currentTimer.timerRunning)
 
                     Spacer()
-                    
-                    // Save Button
-                    Button(action: {
-                        if AppState.timers.isEmpty {
-                            AppState.timers = AppState.speechTimes.map { TimerCode(totalTime: $0 * 60) }
-                        } // Add new timers to timer based on map of speech times on first appearance
-                    }) {
-                        Text("Save")
-                            .font(.system(size:20, weight: .light))
-                        .foregroundColor(.primary.opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.7))
-                    }
-                    .offset(x: -40)
-                    .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
-                    .animation(.default, value: currentTimer.timerRunning)
                 }
                 .padding(.horizontal)
                 .offset(y: 72.5)
@@ -133,7 +129,7 @@ struct DebateView: View {
                         .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
                 }
                 .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
-                .offset(y: AppState.eventPrepTime > 0 ? -75 : -50)
+                .offset(y: AppState.eventPrepTime > 0 ? -65 : -55)
                 
 
                 
@@ -157,16 +153,19 @@ struct DebateView: View {
                         .foregroundStyle(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen"))
                 }
                 .contentShape(Circle())
-                .padding(.bottom, 90)
-                .offset(y: AppState.eventPrepTime > 0 ? 0 : -30)
+                .padding(.bottom, AppState.eventPrepTime > 0 ? 90 : 110)
             }
             
             // Prep time buttons
             HStack {
+                
+                // AFF Prep Time
                 Button(action: {
-                    // AFF prep time button action
-                }) {
-                    Text("Prep\n4:00")
+                    if AppState.eventPrepTime > 0 {
+                        showAffPrep = true
+                    }
+                }, label: {
+                    Text("Prep\n\(formatMMSS(AppState.prepTimeAFF))")
                         .font(.system(size: 20, weight: .semibold))
                         .kerning(2)
                         .multilineTextAlignment(.center)
@@ -174,14 +173,16 @@ struct DebateView: View {
                         .opacity(AppState.eventPrepTime > 0 ? (currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8) : 0.0)
                         .allowsHitTesting(AppState.eventPrepTime > 0 && !(currentTimer.timerRunning && timerStageDimmingEnabled))
                         .animation(.default, value: currentTimer.timerRunning)
-                }
+                })
                 
                 Spacer()
                 
+                // NEG Prep Time
                 Button(action: {
-                    // NEG prep time button action
-                }) {
-                    Text("Prep\n4:00")
+                    if AppState.eventPrepTime > 0 {
+                        showNegPrep = true
+                    }                }, label: {
+                    Text("Prep\n\(formatMMSS(AppState.prepTimeNEG))")
                         .font(.system(size: 20, weight: .semibold))
                         .kerning(2)
                         .multilineTextAlignment(.center)
@@ -189,11 +190,13 @@ struct DebateView: View {
                         .opacity(AppState.eventPrepTime > 0 ? (currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8) : 0.0)
                         .allowsHitTesting(AppState.eventPrepTime > 0 && !(currentTimer.timerRunning && timerStageDimmingEnabled))
                         .animation(.default, value: currentTimer.timerRunning)
-                }
+                })
             }
             .padding(75)
             .offset(y: 210)
         }
+        
+        // Overtime pulser
         .onAppear {
             Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
                 if currentTimer.overtime && overtimeFlashEnabled {
@@ -203,13 +206,16 @@ struct DebateView: View {
                 }
             }
         }
-        .background(Color("BackgroundColor").ignoresSafeArea())
+        .background(Color("BackgroundColor")).ignoresSafeArea()
+        
         // End round alert
         .alert(isPresented: $showEndRoundConfirmation) {
             Alert(
                 title: Text("End Round?"),
                 message: Text("Are you sure you want to return to the event selection screen?"),
                 primaryButton: .destructive(Text("End Round")) {
+                    AppState.prepTimeAFF = Int(AppState.eventPrepTime * 60)
+                    AppState.prepTimeNEG = Int(AppState.eventPrepTime * 60)
                     AppState.timers = []
                     AppState.currentTabIndex = 0
                     withAnimation {
@@ -218,6 +224,18 @@ struct DebateView: View {
                 },
                 secondaryButton: .cancel()
             )
+        }
+        
+        // Prep Time Overlay Sheets
+        .sheet(isPresented: $showAffPrep) {
+            PrepTimeView(side: .aff, color: Color(hex: affColorHex), affRemainingSeconds: $AppState.prepTimeAFF, negRemainingSeconds: $AppState.prepTimeNEG, isPresented: $showAffPrep)
+                .presentationDetents([.height(260)])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showNegPrep) {
+            PrepTimeView(side: .neg, color: Color(hex: negColorHex), affRemainingSeconds: $AppState.prepTimeAFF, negRemainingSeconds: $AppState.prepTimeNEG, isPresented: $showNegPrep)
+                .presentationDetents([.height(260)])
+                .presentationDragIndicator(.visible)
         }
     }
 }

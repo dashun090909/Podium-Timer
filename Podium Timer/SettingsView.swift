@@ -6,7 +6,7 @@ struct SettingsView: View {
     
     @AppStorage("theme") private var theme: String = "Dark"
     @AppStorage("overtimeFlashEnabled") private var overtimeFlashEnabled: Bool = true
-    @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = true
+    @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = false
     @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
@@ -239,6 +239,11 @@ struct SettingsView: View {
                         .foregroundColor(.primary.opacity(0.7))
                         .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.top, 20)
+                    
+                    Text("App icon by Annabelle")
+                        .font(.system(.footnote, design: .monospaced))
+                        .foregroundColor(.primary.opacity(0.7))
+                        .frame(maxWidth: .infinity, alignment: .center)
                         .padding(.bottom, 50)
                 }
             }
@@ -259,7 +264,7 @@ struct SettingsView: View {
     private func resetToDefaults() {
         theme = "Dark"
         overtimeFlashEnabled = true
-        speakerIdentifierEnabled = true
+        speakerIdentifierEnabled = false
         affColorHex = "#0D6FDE"
         negColorHex = "#C42329"
         warningThreshold = 30
