@@ -86,6 +86,13 @@ struct TimerView: View {
                     Text(TimerCode.timerAnalog)
                         .font(.system(size: 50, weight: .medium, design: .monospaced))
                         .kerning(3)
+                        .contentTransition(.numericText())
+                        .animation(
+                            TimerCode.resetPeriod
+                                ? .easeInOut(duration: 0.25)
+                                : nil,
+                            value: TimerCode.timerAnalog
+                        )
                     
                     // Speaker Indicator if relevant for this event
                     if AppState.speechSpeakers.count != 0 {

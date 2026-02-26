@@ -6,8 +6,8 @@ struct SettingsView: View {
     
     @AppStorage("theme") private var theme: String = "Dark"
     @AppStorage("overtimeFlashEnabled") private var overtimeFlashEnabled: Bool = true
-    @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = false
     @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
+    @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = false
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
     @AppStorage("warningColorHexLight") private var warningColorHexLight: String = "#C42329"
@@ -57,6 +57,7 @@ struct SettingsView: View {
                     Image(systemName: "xmark")
                         .font(.system(size: 14, weight: .semibold))
                         .frame(width: 34, height: 34)
+                        .foregroundStyle(Color(.white))
                 }
                 .clipShape(Circle())
                 .glassIfAvailable()
@@ -103,14 +104,6 @@ struct SettingsView: View {
                             Spacer()
                             Toggle("", isOn: $overtimeFlashEnabled)
                         }
-                        
-                        Divider()
-                        
-                        HStack {
-                            Text("Speaker Identifier")
-                            Spacer()
-                            Toggle("", isOn: $speakerIdentifierEnabled)
-                        }
 
                         Divider()
 
@@ -118,6 +111,14 @@ struct SettingsView: View {
                             Text("Timer Stage Dimming")
                             Spacer()
                             Toggle("", isOn: $timerStageDimmingEnabled)
+                        }
+                        
+                        Divider()
+                        
+                        HStack {
+                            Text("Speaker Identifier")
+                            Spacer()
+                            Toggle("", isOn: $speakerIdentifierEnabled)
                         }
                     }
                     .padding(20)
@@ -258,6 +259,10 @@ struct SettingsView: View {
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color("BackgroundColor"))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20)
+                        .stroke(Color.white.opacity(0.2), lineWidth: 0.7)
+                )
                 .shadow(radius: 10)
         )
         .frame(maxHeight: UIScreen.main.bounds.height * 0.7)
@@ -268,6 +273,7 @@ struct SettingsView: View {
     private func resetToDefaults() {
         theme = "Dark"
         overtimeFlashEnabled = true
+        timerStageDimmingEnabled = true
         speakerIdentifierEnabled = false
         affColorHex = "#0D6FDE"
         negColorHex = "#C42329"

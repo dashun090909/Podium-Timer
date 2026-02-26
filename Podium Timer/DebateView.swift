@@ -148,6 +148,10 @@ struct DebateView: View {
                         .background {
                             Circle()
                                 .fill(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen").opacity(0.1))
+                                .overlay(
+                                    Circle()
+                                        .stroke(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen").opacity(0.2), lineWidth: 0.7)
+                                )
                         }
                         .font(.system(size: 25, weight: .light))
                         .foregroundStyle(Color(currentTimer.timerRunning ? "DangerRed" : "StartingGreen"))

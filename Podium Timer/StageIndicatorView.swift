@@ -30,6 +30,10 @@ struct StageIndicatorView: View {
                     // Base capsule
                     Capsule()
                         .fill(fillColor.opacity(isCurrent ? 1.0 : 0.4))
+                        .overlay(
+                            Capsule()
+                                .stroke(fillColor.opacity(0.22), lineWidth: 0.7)
+                        )
                         .frame(width: isCurrent ? baseWidth * 1.75 : baseWidth, height: 8)
                     
                     // Diagonal strips if CX
