@@ -17,6 +17,15 @@ struct PrepTimeView: View {
     @State private var running: Bool = false
     @State private var timer: Timer?
 
+    // Wall-clock based timing so prep continues accurately after background/lock
+    @State private var startedAt: Date?
+    @State private var startingRemainingSeconds: Int = 0
+
+    // Reset handling
+    @State private var showResetConfirm: Bool = false
+    @State private var initialSecondsCaptured: Bool = false
+    @State private var initialSeconds: Int = 0
+
     // Computed binding to the correct side's remainingSeconds
     private var remainingSeconds: Binding<Int> {
         switch side {
@@ -31,9 +40,46 @@ struct PrepTimeView: View {
         VStack(spacing: 16) {
             // Header
             HStack {
+                
+                // Reset Button
+                Button {
+                    showResetConfirm = true
+                } label: {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.system(size: 14, weight: .semibold))
+                        .frame(width: 30, height: 30)
+                        .background(
+                            Circle()
+                                .fill(color.opacity(0.12))
+                        )
+                        .overlay(
+                            Circle()
+                                .stroke((running ? Color("DangerRed") : color).opacity(0.3), lineWidth: 1)
+                                .opacity(0.6)
+                        )
+                }
+                .buttonStyle(.plain)
+                .glassIfAvailable()
+                .disabled(running)
+                .opacity(running ? 0.35 : 1.0)
+                .padding(.leading, 5)
+
+                Spacer()
+            }
+            
+            // Prep Time Menu Title
+            .overlay {
                 Text(side == .aff ? "AFF Prep" : "NEG Prep")
                     .font(.headline)
                     .foregroundStyle(color)
+            }
+            .alert("Reset prep time?", isPresented: $showResetConfirm) {
+                Button("Cancel", role: .cancel) { }
+                Button("Reset", role: .destructive) {
+                    resetPrep()
+                }
+            } message: {
+                Text("This will reset the prep timer back to its starting value.")
             }
 
             // Analog time and overtime indicator
@@ -52,21 +98,34 @@ struct PrepTimeView: View {
             // Start/Stop button
             Button(action: toggle) {
                 Text(running ? "Stop" : "Start")
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: 350)
                     .frame(height: 48)
                     .background(
-                        RoundedRectangle(cornerRadius: 14)
+                        RoundedRectangle(cornerRadius: 100)
                             .fill((running ? Color("DangerRed") : color).opacity(0.12))
+
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 100)
+                            .stroke((running ? Color("DangerRed") : color).opacity(0.3), lineWidth: 1)
+                            .opacity(0.6)
                     )
                     .foregroundStyle(running ? Color("DangerRed") : color)
                     .font(.system(size: 20, weight: .semibold))
             }
+            .glassIfAvailable()
             .contentShape(RoundedRectangle(cornerRadius: 14))
-
+            
             Spacer(minLength: 0)
         }
         .padding(.top, 40)
         .padding(20)
+        .onAppear {
+            if !initialSecondsCaptured {
+                initialSeconds = remainingSeconds.wrappedValue
+                initialSecondsCaptured = true
+            }
+        }
         .onDisappear { stop() }
         .interactiveDismissDisabled(running) // lock sheet while running
     }
@@ -76,17 +135,44 @@ struct PrepTimeView: View {
     private func start() {
         if running { return }
         running = true
+
+        // Capture baseline and wall-clock start so we can "catch up" after backgrounding.
+        startingRemainingSeconds = remainingSeconds.wrappedValue
+        startedAt = Date()
+
         timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            // Allow negative to count overtime
-            remainingSeconds.wrappedValue -= 1
+        // Use a small interval for responsive UI; accuracy comes from wall-clock time.
+        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+            updateRemainingFromClock()
         }
+
+        // Update immediately so UI reflects the running state without waiting for first tick.
+        updateRemainingFromClock()
     }
 
     private func stop() {
+        // Snap remaining time to the correct wall-clock value before stopping.
+        updateRemainingFromClock()
+
         running = false
         timer?.invalidate()
         timer = nil
+        startedAt = nil
+    }
+
+    private func resetPrep() {
+        stop()
+        remainingSeconds.wrappedValue = initialSeconds
+    }
+
+    private func updateRemainingFromClock() {
+        guard running, let startedAt else { return }
+
+        // Compute elapsed seconds based on wall-clock time.
+        let elapsed = Int(Date().timeIntervalSince(startedAt).rounded(.down))
+
+        // Allow negative to count overtime.
+        remainingSeconds.wrappedValue = startingRemainingSeconds - elapsed
     }
 
     private func analog(_ seconds: Int) -> String {

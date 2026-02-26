@@ -54,11 +54,14 @@ struct SettingsView: View {
                         AppState.settings = false
                     }
                 }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 21))
-                        .foregroundColor(.primary.opacity(0.5))
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .frame(width: 34, height: 34)
                 }
+                .clipShape(Circle())
+                .glassIfAvailable()
             }
+    
             .padding(.top, 15)
             .padding(.bottom, 5)
             .padding(.horizontal, 5)
@@ -81,6 +84,7 @@ struct SettingsView: View {
             } message: {
                 Text("Reset all settings to default?")
             }
+            
                         
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
@@ -167,7 +171,7 @@ struct SettingsView: View {
                             }, set: {
                                 warningThreshold = $0 * 60 + (warningThreshold % 60)
                             })) {
-                                ForEach(0..<60) { Text("\($0) min").tag($0) }
+                                ForEach(0..<11) { Text("\($0) min").tag($0) }
                             }
                             .pickerStyle(.wheel)
                             Picker("Seconds", selection: Binding(get: {
@@ -208,7 +212,7 @@ struct SettingsView: View {
                             }, set: {
                                 dangerThreshold = $0 * 60 + (dangerThreshold % 60)
                             })) {
-                                ForEach(0..<60) { Text("\($0) min").tag($0) }
+                                ForEach(0..<11) { Text("\($0) min").tag($0) }
                             }
                             .pickerStyle(.wheel)
                             Picker("Seconds", selection: Binding(get: {

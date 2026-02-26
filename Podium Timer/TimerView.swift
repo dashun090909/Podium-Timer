@@ -31,14 +31,10 @@ struct TimerView: View {
                     ZStack {
                         // Base rectangle
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(
-                                (
-                                    AppState.speechTypes[AppState.currentTabIndex] == "AFF" ? Color(hex: affColorHex) :
-                                    AppState.speechTypes[AppState.currentTabIndex] == "NEG" ? Color(hex: negColorHex) :
-                                    AppState.speechTypes[AppState.currentTabIndex] == "AFFCX" ? Color(hex: affColorHex) :
-                                    AppState.speechTypes[AppState.currentTabIndex] == "NEGCX" ? Color(hex: negColorHex) :
-                                    (theme == "Light" ? Color.primary.opacity(0.6) : Color.primary)
-                                ).opacity(0.4)
+                            .fill(titleTintColor().opacity(0.4))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 15)
+                                    .stroke(titleTintColor().opacity(0.55), lineWidth: 1)
                             )
 
                         // Stripes for CX speeches only
@@ -107,6 +103,19 @@ struct TimerView: View {
         }
     }
     
+    // Determines tint color for the title pill (used for fill + outline)
+    private func titleTintColor() -> Color {
+        let type = AppState.speechTypes[AppState.currentTabIndex]
+
+        if type == "AFF" || type == "AFFCX" {
+            return Color(hex: affColorHex)
+        } else if type == "NEG" || type == "NEGCX" {
+            return Color(hex: negColorHex)
+        } else {
+            return (theme == "Light" ? Color.primary.opacity(0.6) : Color.primary)
+        }
+    }
+
     @AppStorage("warningThreshold") private var warningThreshold: Int = 60
     @AppStorage("dangerThreshold") private var dangerThreshold: Int = 30
 

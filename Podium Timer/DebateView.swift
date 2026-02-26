@@ -129,7 +129,7 @@ struct DebateView: View {
                         .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
                 }
                 .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
-                .offset(y: AppState.eventPrepTime > 0 ? -65 : -55)
+                .offset(y: AppState.eventPrepTime > 0 ? -65 : -30)
                 
 
                 

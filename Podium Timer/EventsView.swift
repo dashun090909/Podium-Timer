@@ -43,45 +43,39 @@ struct EventsView: View {
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                        .buttonStyle(.plain)
 
                     EventButton(eventTitle: "Student Congress", backgroundText: "Con", backgroundTextOffset: -60, event: "Student Congress")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                        .buttonStyle(.plain)
 
                     EventButton(eventTitle: "Lincoln Douglas", backgroundText: "LD", backgroundTextOffset: -60, event: "Lincoln Douglas")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                        .buttonStyle(.plain)
 
                     EventButton(eventTitle: "Parlimentary", backgroundText: "Parli", backgroundTextOffset: -80, event: "Parlimentary")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                        .buttonStyle(.plain)
 
                     EventButton(eventTitle: "Policy", backgroundText: "CX", backgroundTextOffset: -80, event: "Policy")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                        .buttonStyle(.plain)
 
                     EventButton(eventTitle: "Public Forum", backgroundText: "PF", backgroundTextOffset: -80, event: "Public Forum")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                        .buttonStyle(.plain)
 
                     EventButton(eventTitle: "World Schools", backgroundText: "WS", backgroundTextOffset: -80, event: "World Schools")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
-                        .buttonStyle(.plain)
+                    
 
-                    // Spacer replacement: add bottom padding via an empty row
+                    // Spacer adds bottom padding via an empty row
                     Color.clear
                         .frame(height: 20)
                         .listRowSeparator(.hidden)
@@ -92,10 +86,24 @@ struct EventsView: View {
                 .scrollIndicators(.hidden)
                 .scrollContentBackground(.hidden)
                 .background(Color("BackgroundColor"))
+                // Botom gradient
+                .overlay(alignment: .bottom) {
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color("BackgroundColor").opacity(1),
+                            Color("BackgroundColor").opacity(0)
+                        ]),
+                        startPoint: .bottom,
+                        endPoint: .top
+                    )
+                    .frame(height: 40)
+                    .allowsHitTesting(false)
+                }
                 .padding(.top, 20)
             }
             .padding(30)
-
+            
+            // Tom gradient
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color("BackgroundColor").opacity(1),
@@ -107,16 +115,6 @@ struct EventsView: View {
             .frame(height: 40)
             .offset(y: 90)
             
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color("BackgroundColor").opacity(1),
-                    Color("BackgroundColor").opacity(0)
-                ]),
-                startPoint: .bottom,
-                endPoint: .top
-            )
-            .frame(height: 40)
-            .offset(y: 700)
             
             // Settings overlay
             ZStack {
@@ -147,8 +145,6 @@ struct EventButton: View {
     var backgroundTextOffset: CGFloat
     var event: String
 
-    @State private var isPressed = false
-
     var body: some View {
         Button(action: {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -160,16 +156,26 @@ struct EventButton: View {
         }) {
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 20)
-                    .fill(Color("RegressedColor"))
+                    .fill(.ultraThinMaterial)
                     .frame(height: 95)
+                    // subtle tint so the card still reads as your theme color
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color("RegressedColor").opacity(0.35))
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.white.opacity(0.2), lineWidth: 0.8)
+                    )
                     .overlay(
                         Text(backgroundText)
                             .font(.system(size: 160, weight: .bold))
-                            .foregroundColor(Color.primary.opacity(0.05))
+                            .foregroundColor(Color.primary.opacity(0.06))
                             .rotationEffect(.degrees(20))
                             .offset(x: backgroundTextOffset)
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .compositingGroup()
 
                 HStack {
                     Text(eventTitle)
@@ -184,11 +190,24 @@ struct EventButton: View {
                 .padding(.horizontal, 30)
             }
         }
-        .scaleEffect(isPressed ? 0.96 : 1.0)
-        .animation(.spring(response: 0.3, dampingFraction: 0.8), value: isPressed)
-        .onLongPressGesture(minimumDuration: 0.01, maximumDistance: 25, pressing: { pressing in
-            isPressed = pressing
-        }, perform: {})
+        .contentShape(RoundedRectangle(cornerRadius: 20))
+        .buttonStyle(EventPressStyle(cornerRadius: 20))
+    }
+}
+
+private struct EventPressStyle: ButtonStyle {
+    var cornerRadius: CGFloat = 20
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            // Immediate visual feedback on touch-down
+            .opacity(configuration.isPressed ? 0.72 : 1.0)
+            .overlay(
+                RoundedRectangle(cornerRadius: cornerRadius)
+                    .fill(Color.black.opacity(configuration.isPressed ? 0.10 : 0.0))
+            )
+            .scaleEffect(configuration.isPressed ? 0.985 : 1.0)
+            .animation(.spring(response: 0.22, dampingFraction: 0.85), value: configuration.isPressed)
     }
 }
 
