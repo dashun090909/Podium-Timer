@@ -18,7 +18,7 @@
                BlueprintIdentifier = "932B3BBF2CF7FF7900AF503D"
                BuildableName = "Podium Timer.app"
                BlueprintName = "Podium Timer"
-               ReferencedContainer = "container:Podium.xcodeproj">
+               ReferencedContainer = "container:Podium Timer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -38,7 +38,7 @@
                BlueprintIdentifier = "932B3BCF2CF7FF7B00AF503D"
                BuildableName = "Podium TimerTests.xctest"
                BlueprintName = "Podium TimerTests"
-               ReferencedContainer = "container:Podium.xcodeproj">
+               ReferencedContainer = "container:Podium Timer.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -49,7 +49,7 @@
                BlueprintIdentifier = "932B3BD92CF7FF7B00AF503D"
                BuildableName = "Podium TimerUITests.xctest"
                BlueprintName = "Podium TimerUITests"
-               ReferencedContainer = "container:Podium.xcodeproj">
+               ReferencedContainer = "container:Podium Timer.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -71,7 +71,7 @@
             BlueprintIdentifier = "932B3BBF2CF7FF7900AF503D"
             BuildableName = "Podium Timer.app"
             BlueprintName = "Podium Timer"
-            ReferencedContainer = "container:Podium.xcodeproj">
+            ReferencedContainer = "container:Podium Timer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -88,7 +88,7 @@
             BlueprintIdentifier = "932B3BBF2CF7FF7900AF503D"
             BuildableName = "Podium Timer.app"
             BlueprintName = "Podium Timer"
-            ReferencedContainer = "container:Podium.xcodeproj">
+            ReferencedContainer = "container:Podium Timer.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

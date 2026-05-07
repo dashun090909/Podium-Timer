@@ -9,7 +9,7 @@ class AppState: ObservableObject {
     @AppStorage("prepTimeAFF") var prepTimeAFF: Int = 240
     @AppStorage("prepTimeNEG") var prepTimeNEG: Int = 240
 
-    // Dictionary of Events : (Set of times, titles, and types)
+    // Dictionary of events : (Set of times, titles, and types)
     private let eventPresets: [String: (times: [Double], titles: [String], types: [String], speakers: [String], prepTime: Double)] = [
         "Big Questions": (
             times: [5, 5, 3, 4, 4, 3, 3, 3, 2, 2],

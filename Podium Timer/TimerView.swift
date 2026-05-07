@@ -21,6 +21,16 @@ struct TimerView: View {
     }
     
     @State private var refreshTrigger = false // A toggle to force updates
+
+    private var safeSpeechType: String {
+        guard AppState.speechTypes.indices.contains(AppState.currentTabIndex) else { return "" }
+        return AppState.speechTypes[AppState.currentTabIndex]
+    }
+
+    private var safeSpeaker: String? {
+        guard AppState.speechSpeakers.indices.contains(AppState.currentTabIndex) else { return nil }
+        return AppState.speechSpeakers[AppState.currentTabIndex]
+    }
     
     var body: some View {
         ZStack {
@@ -38,7 +48,7 @@ struct TimerView: View {
                             )
 
                         // Stripes for CX speeches only
-                        if AppState.speechTypes[AppState.currentTabIndex].contains("CX") {
+                        if safeSpeechType.contains("CX") {
                             ZStack {
                                 ForEach(0..<50, id: \.self) { i in
                                     Rectangle()
@@ -97,8 +107,8 @@ struct TimerView: View {
                         )
                     
                     // Speaker Identifier if relevant for this event
-                    if AppState.speechSpeakers.count != 0 {
-                        Text(AppState.speechSpeakers[AppState.currentTabIndex])
+                    if let speaker = safeSpeaker {
+                        Text(speaker)
                             .font(.system(size: 17.5, weight: .medium, design: .monospaced))
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.primary.opacity((TimerCode.timerRunning ? 0.1 : 0.75) * (speakerIdentifierEnabled ? 1 : 0)))
@@ -114,7 +124,7 @@ struct TimerView: View {
     
     // Determines tint color for the title pill (used for fill + outline)
     private func titleTintColor() -> Color {
-        let type = AppState.speechTypes[AppState.currentTabIndex]
+        let type = safeSpeechType
 
         if type == "AFF" || type == "AFFCX" {
             return Color(hex: affColorHex)
