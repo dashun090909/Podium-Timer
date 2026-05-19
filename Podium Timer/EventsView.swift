@@ -2,17 +2,17 @@ import SwiftUI
 
 struct EventsView: View {
     @EnvironmentObject var AppState: AppState
+    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @AppStorage("theme") private var theme: String = "Dark"
     
     @State private var settingsIconRotation = 0
-
+    
     var body: some View {
         ZStack(alignment: .top) {
             Color("BackgroundColor").ignoresSafeArea()
-
             VStack(alignment: .leading, spacing: 20) {
-                // Title
-                HStack {
+                // Title and Settings button
+                HStack(alignment: .center) {
                     HStack(spacing: 5) {
                         Text("Podium")
                             .font(.system(size: 35, weight: .heavy))
@@ -20,7 +20,7 @@ struct EventsView: View {
                             .font(.system(size: 35, weight: .heavy))
                             .opacity(0.5)
                     }
-
+                    
                     Spacer()
 
                     Button(action: {
@@ -30,14 +30,15 @@ struct EventsView: View {
                         }
                     }) {
                         Image(systemName: "gearshape.fill")
-                            .font(.title)
+                            .font(.system(size: UIDevice.current.userInterfaceIdiom == .pad ? 38 : 30, weight: .semibold))
                             .foregroundColor(.primary)
                             .rotationEffect(.degrees(Double(settingsIconRotation)))
                     }
                     .offset(x: -10)
                 }
-                .offset(y: 20)
-
+                .offset(y: UIDevice.current.userInterfaceIdiom == .pad ? 20 : 20)
+                .frame(height: UIDevice.current.userInterfaceIdiom == .pad ? 110 : nil)
+                
                 List {
                     EventButton(eventTitle: "Big Questions", backgroundText: "BQ", backgroundTextOffset: -60, event: "Big Questions")
                         .listRowSeparator(.hidden)
@@ -54,7 +55,7 @@ struct EventsView: View {
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
 
-                    EventButton(eventTitle: "Parlimentary", backgroundText: "Parli", backgroundTextOffset: -80, event: "Parlimentary")
+                    EventButton(eventTitle: "Parliamentary", backgroundText: "Parli", backgroundTextOffset: -80, event: "Parliamentary")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
@@ -74,7 +75,6 @@ struct EventsView: View {
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
                     
-
                     // Spacer adds bottom padding via an empty row
                     Color.clear
                         .frame(height: 20)
@@ -86,6 +86,7 @@ struct EventsView: View {
                 .scrollIndicators(.hidden)
                 .scrollContentBackground(.hidden)
                 .background(Color("BackgroundColor"))
+                
                 // Botom gradient
                 .overlay(alignment: .bottom) {
                     LinearGradient(
@@ -99,11 +100,12 @@ struct EventsView: View {
                     .frame(height: 40)
                     .allowsHitTesting(false)
                 }
-                .padding(.top, 20)
+                .padding(.top, UIDevice.current.userInterfaceIdiom == .pad ? 0 : 20)
             }
-            .padding(30)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 50 : 30)
+            .padding(.vertical, 30)
             
-            // Tom gradient
+            // Top gradient
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color("BackgroundColor").opacity(1),
@@ -113,7 +115,7 @@ struct EventsView: View {
                 endPoint: .bottom
             )
             .frame(height: 40)
-            .offset(y: 90)
+            .offset(y: UIDevice.current.userInterfaceIdiom == .pad ? 125 : 90)
             
             
             // Settings overlay
@@ -127,7 +129,7 @@ struct EventsView: View {
                             SettingsView()
                             Spacer()
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(maxWidth: 600, maxHeight: 800)
                     }
                     .transition(.opacity)
                     .zIndex(1)
@@ -158,7 +160,6 @@ struct EventButton: View {
                 RoundedRectangle(cornerRadius: 20)
                     .fill(.ultraThinMaterial)
                     .frame(height: 95)
-                    // subtle tint so the card still reads as your theme color
                     .background(
                         RoundedRectangle(cornerRadius: 20)
                             .fill(Color("RegressedColor").opacity(0.35))
@@ -172,7 +173,7 @@ struct EventButton: View {
                             .font(.system(size: 160, weight: .bold))
                             .foregroundColor(Color.primary.opacity(0.06))
                             .rotationEffect(.degrees(20))
-                            .offset(x: backgroundTextOffset)
+                            .offset(x: UIDevice.current.userInterfaceIdiom == .pad ? backgroundTextOffset + 150 : backgroundTextOffset)
                     )
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .compositingGroup()

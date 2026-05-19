@@ -36,6 +36,10 @@ struct PrepTimeView: View {
     // Enables a short numeric-text animation when the timer is reset
     @State private var resetPeriod: Bool = false
 
+    private var isiPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
+
     // Computed binding to the correct side's remainingSeconds
     private var remainingSeconds: Binding<Int> {
         switch side {
@@ -58,8 +62,8 @@ struct PrepTimeView: View {
                     showResetConfirm = true
                 } label: {
                     Image(systemName: "arrow.counterclockwise")
-                        .font(.system(size: 14, weight: .semibold))
-                        .frame(width: 30, height: 30)
+                        .font(.system(size: isiPad ? 18 : 14, weight: .semibold))
+                        .frame(width: isiPad ? 42 : 30, height: isiPad ? 42 : 30)
                         .background(
                             Circle()
                                 .fill(color.opacity(0.12))
@@ -74,6 +78,7 @@ struct PrepTimeView: View {
                 .glassIfAvailable()
                 .disabled(running)
                 .opacity(running ? 0.35 : 1.0)
+                .offset(x: isiPad ? 20 : 0)
                 .padding(.leading, 5)
 
                 Spacer()
@@ -82,7 +87,7 @@ struct PrepTimeView: View {
             // Prep Time Menu Title
             .overlay {
                 Text(side == .aff ? "AFF Prep" : "NEG Prep")
-                    .font(.headline)
+                    .font(.system(size: isiPad ? 22 : 17, weight: .semibold))
                     .foregroundStyle(color)
             }
             .alert("Reset prep time?", isPresented: $showResetConfirm) {
@@ -96,14 +101,14 @@ struct PrepTimeView: View {
 
             // Last used (previous continuous run duration)
             Text("Last used: \(formatElapsed(lastRunElapsedSeconds))")
-                .font(.system(size: 15, weight: .medium, design: .monospaced))
+                .font(.system(size: isiPad ? 18 : 15, weight: .medium, design: .monospaced))
                 .foregroundStyle(.secondary)
                 .opacity(prepLastUsedEnabled ? (running ? 0.45 : 1.0) : 0.0)
 
             // Analog time
             VStack(spacing: 6) {
                 Text(analog(remainingSeconds.wrappedValue))
-                    .font(.system(size: 48, weight: .medium, design: .monospaced))
+                    .font(.system(size: isiPad ? 64 : 48, weight: .medium, design: .monospaced))
                     .kerning(2)
                     .scaleEffect(prepLastUsedEnabled ? 1.0 : 1.2)
                     .foregroundStyle(
@@ -125,7 +130,7 @@ struct PrepTimeView: View {
             Button(action: toggle) {
                 Text(running ? "Stop" : "Start")
                     .frame(maxWidth: 350)
-                    .frame(height: 60)
+                    .frame(height: isiPad ? 68 : 60)
                     .background(
                         RoundedRectangle(cornerRadius: 100)
                             .fill((running ? Color("DangerRed") : color).opacity(0.12))
@@ -137,16 +142,21 @@ struct PrepTimeView: View {
                             .opacity(0.6)
                     )
                     .foregroundStyle(running ? Color("DangerRed") : color)
-                    .font(.system(size: 20, weight: .semibold))
+                    .font(.system(size: isiPad ? 24 : 20, weight: .semibold))
             }
             .glassIfAvailable()
             .contentShape(RoundedRectangle(cornerRadius: 14))
             .offset(y: -10)
             .padding(.bottom)
+
+            // Extra iPad-only breathing room so the bottom border does not crowd the button.
+            if isiPad {
+                Spacer()
+            }
             
             Spacer(minLength: 10)
         }
-        .padding(.top, 65)
+        .padding(.top, isiPad ? 78 : 65)
         .padding(20)
         .onAppear {
             // Establish baselines without capturing an already-elapsed value.

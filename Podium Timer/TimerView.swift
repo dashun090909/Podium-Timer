@@ -8,7 +8,6 @@ struct TimerView: View {
     @AppStorage("theme") private var theme: String = "Dark"
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
-    @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = false
     @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
 
     let speechTitle: String   // Parameter for speech title text
@@ -22,19 +21,30 @@ struct TimerView: View {
     
     @State private var refreshTrigger = false // A toggle to force updates
 
+    private var isPad: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad
+    }
+
+    private var titleWidth: CGFloat {
+        min(CGFloat(speechTitle.count) * (isPad ? 64 : 60), isPad ? 320 : 300)
+    }
+
+    private var titleHeight: CGFloat {
+        isPad ? 72 : 70
+    }
+
+    private var timerDiameter: CGFloat {
+        isPad ? 350 : 290
+    }
+
     private var safeSpeechType: String {
         guard AppState.speechTypes.indices.contains(AppState.currentTabIndex) else { return "" }
         return AppState.speechTypes[AppState.currentTabIndex]
     }
 
-    private var safeSpeaker: String? {
-        guard AppState.speechSpeakers.indices.contains(AppState.currentTabIndex) else { return nil }
-        return AppState.speechSpeakers[AppState.currentTabIndex]
-    }
-    
     var body: some View {
         ZStack {
-            VStack {
+            VStack(spacing: isPad ? 24 : 0) {
                 // Title
                 ZStack {
                     // Background for AFF/NEG
@@ -44,7 +54,7 @@ struct TimerView: View {
                             .fill(titleTintColor().opacity(0.4))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 15)
-                                    .stroke(titleTintColor().opacity(0.55), lineWidth: 1)
+                                    .stroke(titleTintColor().opacity(0.55), lineWidth: 1.5)
                             )
 
                         // Stripes for CX speeches only
@@ -58,16 +68,18 @@ struct TimerView: View {
                                         .offset(x: CGFloat(i) * 60 - 450)
                                 }
                             }
-                            .frame(width: min(CGFloat(speechTitle.count) * 60, 300), height: 70)
+                            .frame(width: titleWidth, height: titleHeight)
                         }
                     }
-                    .frame(width: min(CGFloat(speechTitle.count) * 60, 300), height: 70) .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .frame(width: titleWidth, height: titleHeight)
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
                     
                     // Title text
                     Text(speechTitle)
-                        .font(.title.bold())
+                        .font(.system(size: isPad ? 34 : 28, weight: .bold))
                 }
                 .opacity(TimerCode.timerRunning && timerStageDimmingEnabled ? 0.1 : 1.0)
+                .offset(y: isPad ? -18 : -22)
                 .animation(.easeInOut, value: TimerCode.timerRunning)
                                 
                 // Timer circle
@@ -89,14 +101,14 @@ struct TimerView: View {
                     
                     // Overtime Indiciator
                     Text(TimerCode.overtime ? "OVERTIME" : "")
-                        .font(.system(size: 20, weight: .medium, design: .monospaced))
+                        .font(.system(size: isPad ? 24 : 20, weight: .medium, design: .monospaced))
                         .kerning(3)
                         .offset(y: -50)
                         .animation(.easeIn, value: TimerCode.overtime)
                     
                     // Analog time
                     Text(TimerCode.timerAnalog)
-                        .font(.system(size: 50, weight: .medium, design: .monospaced))
+                        .font(.system(size: isPad ? 58 : 50, weight: .medium, design: .monospaced))
                         .kerning(3)
                         .contentTransition(.numericText())
                         .animation(
@@ -105,18 +117,8 @@ struct TimerView: View {
                                 : nil,
                             value: TimerCode.timerAnalog
                         )
-                    
-                    // Speaker Identifier if relevant for this event
-                    if let speaker = safeSpeaker {
-                        Text(speaker)
-                            .font(.system(size: 17.5, weight: .medium, design: .monospaced))
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.primary.opacity((TimerCode.timerRunning ? 0.1 : 0.75) * (speakerIdentifierEnabled ? 1 : 0)))
-                            .offset(y: 60)
-                            .animation(.easeIn, value: TimerCode.timerRunning)
-                    }
                 }
-                .frame(width: 290, height: 300)
+                .frame(width: timerDiameter, height: timerDiameter)
                 .padding(10)
             }
         }

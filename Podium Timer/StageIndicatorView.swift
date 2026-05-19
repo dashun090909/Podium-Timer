@@ -13,7 +13,8 @@ struct StageIndicatorView: View {
     var body: some View {
         // Repeating capsules for each speech
         HStack(spacing: 8) {
-            let baseWidth = 270 / (Double(pageCount) + 1.75)
+            let availableWidth = UIDevice.current.userInterfaceIdiom == .pad ? 340.0 : 270.0
+            let baseWidth = availableWidth / (Double(pageCount) + 1.75)
             
             ForEach(0..<pageCount, id: \.self) { index in
                 let isCurrent = index == currentPage
@@ -32,7 +33,7 @@ struct StageIndicatorView: View {
                         .fill(fillColor.opacity(isCurrent ? 1.0 : 0.4))
                         .overlay(
                             Capsule()
-                                .stroke(fillColor.opacity(0.22), lineWidth: 0.7)
+                                .stroke(fillColor.opacity(0.22), lineWidth: 1.5)
                         )
                         .frame(width: isCurrent ? baseWidth * 1.75 : baseWidth, height: 8)
                     

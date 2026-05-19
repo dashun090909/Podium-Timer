@@ -7,7 +7,6 @@ struct SettingsView: View {
     @AppStorage("theme") private var theme: String = "Dark"
     @AppStorage("overtimeRedEnabled") private var overtimeRedEnabled: Bool = true
     @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
-    @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = false
     @AppStorage("prepLastUsedEnabled") private var prepLastUsedEnabled: Bool = false
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
@@ -113,14 +112,6 @@ struct SettingsView: View {
                             Text("Timer Stage Dimming")
                             Spacer()
                             Toggle("", isOn: $timerStageDimmingEnabled)
-                        }
-                        
-                        Divider()
-                        
-                        HStack {
-                            Text("Speaker Identifier")
-                            Spacer()
-                            Toggle("", isOn: $speakerIdentifierEnabled)
                         }
                     }
                     .padding(20)
@@ -281,8 +272,7 @@ struct SettingsView: View {
         theme = "Dark"
         overtimeRedEnabled = true
         timerStageDimmingEnabled = true
-        speakerIdentifierEnabled = false
-        prepLastUsedEnabled = true
+        prepLastUsedEnabled = false
         affColorHex = "#0D6FDE"
         negColorHex = "#C42329"
         warningThreshold = 30

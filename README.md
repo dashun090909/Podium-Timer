@@ -3,12 +3,11 @@
 Podium Timer is a SwiftUI debate timer for iPhone and iPad. It provides preset speech sequences for common speech and debate formats, per-speech countdown timers, prep-time tracking, overtime visuals, and configurable display settings.
 ## Features
 
-- Event presets for Big Questions, Student Congress, Lincoln Douglas, Parlimentary, Policy, Public Forum, and World Schools.
+- Event presets for Big Questions, Student Congress, Lincoln Douglas, Parliamentary, Policy, Public Forum, and World Schools.
 - Swipe-based round navigation with one timer per speech segment.
 - Circular countdown display with color-based warning states.
 - Overtime mode with optional red screen background.
 - AFF and NEG prep-time sheets for events that use prep time.
-- Optional speaker identifiers for formats with role-specific speeches.
 - Light and dark themes.
 - Custom AFF and NEG colors.
 - Configurable yellow and red timer warning thresholds.
@@ -16,7 +15,7 @@ Podium Timer is a SwiftUI debate timer for iPhone and iPad. It provides preset s
 - Persistent settings through `@AppStorage`.
 
 ## Supported Events (Speech and prep regulations are to the best of my ability matched to NSDA and CHSSA rules):
-Big Questions, Student Congress, Lincoln Douglas, Parlimentary, Policy, Public Forum, World Schools
+Big Questions, Student Congress, Lincoln Douglas, Parliamentary, Policy, Public Forum, World Schools
 
 Event timing data is defined in `AppState` inside `Podium_TimerApp.swift`.
 
@@ -58,7 +57,6 @@ Available settings:
 - Theme: Light or Dark.
 - Overtime Red: enable or disable the red overtime background.
 - Timer Stage Dimming: dim nonessential UI while a timer is active.
-- Speaker Identifier: show speaker labels when available.
 - Yellow Threshold: remaining time when the timer moves to warning color.
 - Red Threshold: remaining time when the timer moves to danger color.
 - Affirmative Color: custom AFF color.
@@ -122,5 +120,5 @@ Podium Timer/
 - The app uses SwiftUI views and `ObservableObject` state.
 - User preferences are persisted with `@AppStorage`.
 - Timer state is intentionally separated into `TimerCode` instances so each speech keeps its own countdown.
-- Event presets are currently hard-coded in `AppState`; adding a new event requires adding its times, titles, speech types, optional speaker labels, and prep-time value.
+- Event presets are currently hard-coded in `AppState`; adding a new event requires adding its times, titles, speech types, and prep-time value.
 - `IfGlassAvailable.swift` should be used for glass-style controls where platform support is available.

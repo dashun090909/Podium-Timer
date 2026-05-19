@@ -1,2 +1,9 @@
 *.xcuserstate
 xcuserdata/
+.DS_Store
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.abi.json
+Index.noindex/
