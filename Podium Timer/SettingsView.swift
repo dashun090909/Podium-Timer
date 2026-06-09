@@ -56,15 +56,15 @@ struct SettingsView: View {
                 }) {
                     Image(systemName: "xmark")
                         .font(.system(size: 14, weight: .semibold))
-                        .frame(width: 34, height: 34)
+                        .frame(width: 26, height: 26)
                         .foregroundStyle(.primary)
                 }
-                .buttonStyle(.plain)
-                .clipShape(Circle())
-                .glassIfAvailable()
+                .buttonBorderShape(.circle)
+                .GlassButtonIfAvailable()
+                .offset(x: 5)
             }
     
-            .padding(.top, 15)
+            .padding(.top, 10)
             .padding(.bottom, 5)
             .padding(.horizontal, 5)
 

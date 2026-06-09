@@ -62,7 +62,7 @@ struct DebateView: View {
         let secs = clamped % 60
         return String(format: "%d:%02d", minutes, secs)
     }
-    
+
     var body: some View {
         ZStack {
             // Overtime background
@@ -85,13 +85,18 @@ struct DebateView: View {
                     }) {
                         HStack(spacing: 4) {
                             Image(systemName: "chevron.left")
-                                .font(.system(size: 20, weight: .bold))
+                                .font(.system(size: 17, weight: .bold))
                             Text("End Round")
-                                .font(.system(size: 20, weight: .light))
+                                .font(.system(size: 17, weight: .light))
                         }
-                        .foregroundColor(.primary.opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8))
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 4)
+                        .foregroundStyle(.primary)
                     }
+                    .buttonBorderShape(.capsule)
+                    .GlassButtonIfAvailable()
                     .offset(x: isPad ? 50 : 30)
+                    .opacity(currentTimer.timerRunning && timerStageDimmingEnabled ? 0.1 : 0.8)
                     .allowsHitTesting(!(currentTimer.timerRunning && timerStageDimmingEnabled))
                     .animation(.default, value: currentTimer.timerRunning)
 
@@ -126,6 +131,7 @@ struct DebateView: View {
                 ) // Invisible overlay blocks swiping according to swipeAllowed
                 .padding(isPad ? 0 : 10)
                 .frame(height: isPad ? 520 : nil)
+                .offset(y: !isPad && AppState.eventPrepTime == 0 ? 18 : 0)
                 
                 // Reset Button that interacts with current TimerCode instance
                 ZStack {
@@ -309,12 +315,20 @@ struct DebateView: View {
                 title: Text("End Round?"),
                 message: Text("Are you sure you want to return to the event selection screen?"),
                 primaryButton: .destructive(Text("End Round")) {
-                    AppState.prepTimeAFF = Int(AppState.eventPrepTime * 60)
-                    AppState.prepTimeNEG = Int(AppState.eventPrepTime * 60)
-                    AppState.timers = []
-                    AppState.currentTabIndex = 0
-                    withAnimation {
-                        AppState.view = "EventsView"
+                    timers.forEach { $0.stop() }
+                    UIApplication.shared.isIdleTimerDisabled = false
+                    AppState.view = "EventsView"
+
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
+                        var transaction = Transaction()
+                        transaction.disablesAnimations = true
+
+                        withTransaction(transaction) {
+                            AppState.prepTimeAFF = Int(AppState.eventPrepTime * 60)
+                            AppState.prepTimeNEG = Int(AppState.eventPrepTime * 60)
+                            AppState.timers = []
+                            AppState.currentTabIndex = 0
+                        }
                     }
                 },
                 secondaryButton: .cancel()

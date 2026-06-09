@@ -43,37 +43,37 @@ struct EventsView: View {
                     EventButton(eventTitle: "Big Questions", backgroundText: "BQ", backgroundTextOffset: -60, event: "Big Questions")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
 
                     EventButton(eventTitle: "Student Congress", backgroundText: "Con", backgroundTextOffset: -60, event: "Student Congress")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
 
                     EventButton(eventTitle: "Lincoln Douglas", backgroundText: "LD", backgroundTextOffset: -60, event: "Lincoln Douglas")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
 
-                    EventButton(eventTitle: "Parliamentary", backgroundText: "Parli", backgroundTextOffset: -80, event: "Parliamentary")
+                    EventButton(eventTitle: "Parliamentary", backgroundText: "Parli", backgroundTextOffset: -50, event: "Parliamentary")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
 
                     EventButton(eventTitle: "Policy", backgroundText: "CX", backgroundTextOffset: -80, event: "Policy")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
 
                     EventButton(eventTitle: "Public Forum", backgroundText: "PF", backgroundTextOffset: -80, event: "Public Forum")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
 
                     EventButton(eventTitle: "World Schools", backgroundText: "WS", backgroundTextOffset: -80, event: "World Schools")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 0, bottom: 10, trailing: 0))
+                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
                     
                     // Spacer adds bottom padding via an empty row
                     Color.clear
@@ -102,7 +102,7 @@ struct EventsView: View {
                 }
                 .padding(.top, UIDevice.current.userInterfaceIdiom == .pad ? 0 : 20)
             }
-            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 50 : 30)
+            .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 44 : 24)
             .padding(.vertical, 30)
             
             // Top gradient
@@ -142,10 +142,15 @@ struct EventsView: View {
 
 struct EventButton: View {
     @EnvironmentObject var AppState: AppState
+    @AppStorage("theme") private var theme: String = "Dark"
     var eventTitle: String
     var backgroundText: String
     var backgroundTextOffset: CGFloat
     var event: String
+
+    private var cardContrastFill: Color {
+        theme == "Light" ? Color.black.opacity(0.04) : Color.white.opacity(0.04)
+    }
 
     var body: some View {
         Button(action: {
@@ -156,27 +161,42 @@ struct EventButton: View {
                 AppState.view = "DebateView"
             }
         }) {
-            ZStack(alignment: .leading) {
-                RoundedRectangle(cornerRadius: 20)
-                    .fill(.ultraThinMaterial)
-                    .frame(height: 95)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color("RegressedColor").opacity(0.35))
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.white.opacity(0.2), lineWidth: 1.5)
-                    )
-                    .overlay(
-                        Text(backgroundText)
-                            .font(.system(size: 160, weight: .bold))
-                            .foregroundColor(Color.primary.opacity(0.06))
-                            .rotationEffect(.degrees(20))
-                            .offset(x: UIDevice.current.userInterfaceIdiom == .pad ? backgroundTextOffset + 150 : backgroundTextOffset)
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    .compositingGroup()
+            let label = ZStack(alignment: .leading) {
+                if #available(iOS 26.0, *) {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(cardContrastFill)
+                        .frame(height: 95)
+                        .overlay(
+                            Text(backgroundText)
+                                .font(.system(size: 160, weight: .bold))
+                                .foregroundColor(Color.primary.opacity(0.06))
+                                .rotationEffect(.degrees(20))
+                                .offset(x: UIDevice.current.userInterfaceIdiom == .pad ? backgroundTextOffset + 150 : backgroundTextOffset)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .glassEffect(.regular.interactive(), in: .rect(cornerRadius: 20))
+                } else {
+                    RoundedRectangle(cornerRadius: 20)
+                        .fill(.ultraThinMaterial)
+                        .frame(height: 95)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(cardContrastFill)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 20)
+                                .stroke(Color.white.opacity(0.2), lineWidth: 1.5)
+                        )
+                        .overlay(
+                            Text(backgroundText)
+                                .font(.system(size: 160, weight: .bold))
+                                .foregroundColor(Color.primary.opacity(0.06))
+                                .rotationEffect(.degrees(20))
+                                .offset(x: UIDevice.current.userInterfaceIdiom == .pad ? backgroundTextOffset + 150 : backgroundTextOffset)
+                        )
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                        .compositingGroup()
+                }
 
                 HStack {
                     Text(eventTitle)
@@ -190,6 +210,8 @@ struct EventButton: View {
                 }
                 .padding(.horizontal, 30)
             }
+
+            label
         }
         .contentShape(RoundedRectangle(cornerRadius: 20))
         .buttonStyle(EventPressStyle(cornerRadius: 20))
@@ -199,16 +221,21 @@ struct EventButton: View {
 private struct EventPressStyle: ButtonStyle {
     var cornerRadius: CGFloat = 20
 
+    @ViewBuilder
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            // Immediate visual feedback on touch-down
-            .opacity(configuration.isPressed ? 0.72 : 1.0)
-            .overlay(
-                RoundedRectangle(cornerRadius: cornerRadius)
-                    .fill(Color.black.opacity(configuration.isPressed ? 0.10 : 0.0))
-            )
-            .scaleEffect(configuration.isPressed ? 0.985 : 1.0)
-            .animation(.spring(response: 0.22, dampingFraction: 0.85), value: configuration.isPressed)
+        if #available(iOS 26.0, *) {
+            configuration.label
+        } else {
+            configuration.label
+                // Immediate visual feedback on touch-down
+                .opacity(configuration.isPressed ? 0.72 : 1.0)
+                .overlay(
+                    RoundedRectangle(cornerRadius: cornerRadius)
+                        .fill(Color.black.opacity(configuration.isPressed ? 0.10 : 0.0))
+                )
+                .scaleEffect(configuration.isPressed ? 0.985 : 1.0)
+                .animation(.spring(response: 0.22, dampingFraction: 0.85), value: configuration.isPressed)
+        }
     }
 }
 

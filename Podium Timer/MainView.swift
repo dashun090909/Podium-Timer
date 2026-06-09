@@ -13,12 +13,14 @@ struct MainView: View {
                         insertion: .move(edge: .trailing).combined(with: .opacity),
                         removal: .move(edge: .trailing).combined(with: .opacity)
                     ))
+                    .zIndex(1)
             } else {
                 EventsView()
                     .transition(.asymmetric(
                         insertion: .move(edge: .leading).combined(with: .opacity),
                         removal: .move(edge: .leading).combined(with: .opacity)
                     ))
+                    .zIndex(0)
             }
         }
         .preferredColorScheme(theme == "Dark" ? .dark : .light)
