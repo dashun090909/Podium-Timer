@@ -7,15 +7,16 @@ struct SettingsView: View {
     @AppStorage("theme") private var theme: String = "Dark"
     @AppStorage("overtimeRedEnabled") private var overtimeRedEnabled: Bool = true
     @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
-    @AppStorage("prepLastUsedEnabled") private var prepLastUsedEnabled: Bool = false
+    @AppStorage("warningThreshold") private var warningThreshold: Int = 30
+    @AppStorage("dangerThreshold") private var dangerThreshold: Int = 10
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
     @AppStorage("warningColorHexLight") private var warningColorHexLight: String = "#C42329"
     @AppStorage("warningColorHexDark") private var warningColorHexDark: String = "#C42329"
     @AppStorage("dangerColorHexLight") private var dangerColorHexLight: String = "#C42329"
     @AppStorage("dangerColorHexDark") private var dangerColorHexDark: String = "#C42329"
-    @AppStorage("warningThreshold") private var warningThreshold: Int = 30
-    @AppStorage("dangerThreshold") private var dangerThreshold: Int = 10
+    @AppStorage("prepLastUsedEnabled") private var prepLastUsedEnabled: Bool = false
+    @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = false
 
     @State private var showingResetAlert = false
 
@@ -238,6 +239,14 @@ struct SettingsView: View {
                             Spacer()
                             Toggle("", isOn: $prepLastUsedEnabled)
                         }
+                        
+                        Divider()
+                        
+                        HStack {
+                            Text("Team Debate Speaker Identifer")
+                            Spacer()
+                            Toggle("", isOn: $speakerIdentifierEnabled)
+                        }
                     }
                     .padding(20)
                     .background(RoundedRectangle(cornerRadius: 12).fill(Color("RegressedColor").opacity(0.5)))
@@ -272,11 +281,12 @@ struct SettingsView: View {
         theme = "Dark"
         overtimeRedEnabled = true
         timerStageDimmingEnabled = true
-        prepLastUsedEnabled = false
-        affColorHex = "#0D6FDE"
-        negColorHex = "#C42329"
         warningThreshold = 30
         dangerThreshold = 10
+        affColorHex = "#0D6FDE"
+        negColorHex = "#C42329"
+        prepLastUsedEnabled = false
+        speakerIdentifierEnabled = false
     }
 }
 

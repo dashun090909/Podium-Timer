@@ -8,6 +8,7 @@ struct TimerView: View {
     @AppStorage("theme") private var theme: String = "Dark"
     @AppStorage("affColorHex") private var affColorHex: String = "#0D6FDE"
     @AppStorage("negColorHex") private var negColorHex: String = "#C42329"
+    @AppStorage("speakerIdentifierEnabled") private var speakerIdentifierEnabled: Bool = false
     @AppStorage("timerStageDimmingEnabled") private var timerStageDimmingEnabled: Bool = true
 
     let speechTitle: String   // Parameter for speech title text
@@ -117,6 +118,16 @@ struct TimerView: View {
                                 : nil,
                             value: TimerCode.timerAnalog
                         )
+                    
+                    // Speaker Identifier if relevant for this event
+                    if AppState.speechSpeakers.count != 0 {
+                        Text(AppState.speechSpeakers[AppState.currentTabIndex])
+                            .font(.system(size: 17.5, weight: .medium, design: .monospaced))
+                            .multilineTextAlignment(.center)
+                            .foregroundStyle(.primary.opacity((TimerCode.timerRunning ? 0.1 : 0.75) * (speakerIdentifierEnabled ? 1 : 0)))
+                            .offset(y: 60)
+                            .animation(.easeIn, value: TimerCode.timerRunning)
+                    }
                 }
                 .frame(width: timerDiameter, height: timerDiameter)
                 .padding(10)
