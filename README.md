@@ -18,7 +18,7 @@ The Podium Timer is a SwiftUI-built iOS and iPadOS Speech & Debate timer, design
 
 ## How to Build & Run This Project:
 
-1. git clone https://github.com/USERNAME/REPOSITORY.git
+1. git clone https://github.com/dashun090909/Podium-Timer.git
 2. Start Xcode and open the PodiumTimer.xcodeproj file.
 3. In the navigation bar select the "Podium Timer" scheme.
 4. Choose either an iPhone simulator or connect a physical iPhone/iPad to test on real hardware.
