@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="Podium Timer/Images/Podium%20Banner.png" alt="Podium Timer Banner" width="400">
+</p>
+
 # Podium Timer
 
 The Podium Timer is a SwiftUI-built iOS and iPadOS Speech & Debate timer, designed to help you keep track of speech times, preperation, and glanceable information during competition rounds. Podium Timer is built for visual clarity and customizability, keeping your mind on the flow and off the clock.
@@ -30,3 +34,12 @@ The Podium Timer is a SwiftUI-built iOS and iPadOS Speech & Debate timer, design
 - Preferences are saved to local storage using @AppStorage.
 - TimerCode manages the clock logic, even when the app is closed.
 - All preset events along with their associated event data (times, names, speech type, prep time) are hardcoded into AppState.
+
+## Screenshots
+
+<p align="center">
+  <img src="Podium Timer/Images/Screenshot1.png" width="250">
+  <img src="Podium Timer/Images/Screenshot2.png" width="250">
+  <img src="Podium Timer/Images/Screenshot3.png" width="250">
+  <img src="Podium Timer/Images/Screenshot4.png" width="250">
+</p>
