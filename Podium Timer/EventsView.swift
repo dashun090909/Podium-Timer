@@ -50,7 +50,7 @@ struct EventsView: View {
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
 
-                    EventButton(eventTitle: "Lincoln Douglas", backgroundText: "LD", backgroundTextOffset: -60, event: "Lincoln Douglas")
+                    EventButton(eventTitle: "Lincoln Douglas", backgroundText: "LD", backgroundTextOffset: -80, event: "Lincoln Douglas")
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))

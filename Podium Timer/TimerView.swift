@@ -25,6 +25,10 @@ struct TimerView: View {
     private var isPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
     }
+    
+    private var isLargePhone: Bool {
+        UIDevice.current.userInterfaceIdiom == .phone && UIScreen.main.bounds.width >= 430
+    }
 
     private var titleWidth: CGFloat {
         min(CGFloat(speechTitle.count) * (isPad ? 64 : 60), isPad ? 320 : 300)
@@ -80,7 +84,7 @@ struct TimerView: View {
                         .font(.system(size: isPad ? 34 : 28, weight: .bold))
                 }
                 .opacity(TimerCode.timerRunning && timerStageDimmingEnabled ? 0.1 : 1.0)
-                .offset(y: isPad ? -18 : -22)
+                .offset(y: isPad ? -18 : (isLargePhone ? -40 : -20))
                 .animation(.easeInOut, value: TimerCode.timerRunning)
                                 
                 // Timer circle
@@ -99,6 +103,12 @@ struct TimerView: View {
                         .animation((TimerCode.timerRunning || TimerCode.resetPeriod) ? .linear : nil, value: TimerCode.timerProgress)
                         .opacity(TimerCode.overtime ? 0 : 1)
                         .animation(.easeOut(duration: 0.2), value: TimerCode.overtime)
+                    
+                    // Protected Time Indiciator
+                    Text(TimerCode.protectedTime ? (TimerCode.overtime ? "" : "Protected Time") : "")
+                        .font(.system(size: isPad ? 24 : 20, weight: .medium, design: .monospaced))
+                        .offset(y: -50)
+                        .animation(.easeIn, value: TimerCode.protectedTime)
                     
                     // Overtime Indiciator
                     Text(TimerCode.overtime ? "OVERTIME" : "")

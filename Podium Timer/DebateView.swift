@@ -74,6 +74,8 @@ struct DebateView: View {
             VStack {
                 if !isPad {
                     Spacer()
+                    Spacer()
+
                 }
                 
                 // Top bar with End Round button
@@ -348,9 +350,20 @@ struct DebateView: View {
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = currentTimer.timerRunning
+
+            // Configure protected time for the current speech when the view appears
+            if AppState.speechTitles.indices.contains(AppState.currentTabIndex) {
+                let minutes = AppState.protectedTimes.count == 1 && AppState.protectedTimes.first == 0 ? 0 : (AppState.currentTabIndex < AppState.protectedTimes.count ? AppState.protectedTimes[AppState.currentTabIndex] : 0)
+                currentTimer.configureProtectedTime(minutesPerSide: minutes)
+            }
         }
         .onDisappear {
             UIApplication.shared.isIdleTimerDisabled = false
+        }
+        .onChange(of: AppState.currentTabIndex) { _, newValue in
+            // Reconfigure protected time whenever the user switches speeches
+            let minutes = AppState.protectedTimes.count == 1 && AppState.protectedTimes.first == 0 ? 0 : (newValue < AppState.protectedTimes.count ? AppState.protectedTimes[newValue] : 0)
+            currentTimer.configureProtectedTime(minutesPerSide: minutes)
         }
     }
 }
