@@ -6,6 +6,10 @@
 
 The Podium Timer is a SwiftUI-built iOS and iPadOS Speech & Debate timer, designed to help you keep track of speech times, preperation, and glanceable information during competition rounds. Podium Timer is built for visual clarity and customizability, keeping your mind on the flow and off the clock.
 
+## Demo
+My video demo for Podium Timer :)
+https://drive.google.com/file/d/1fjz7AB_OJFNdy--DsaDWB85zX2w8R7TM/view?usp=sharing
+
 ## Features
 
 - Full support for most NSDA, TOC and CHSSA debate formats (Policy, Lincoln-Douglas, Public Forum, Student Congress, Parliamentary, etc.)
