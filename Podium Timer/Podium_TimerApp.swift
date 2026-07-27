@@ -5,9 +5,20 @@ class AppState: ObservableObject {
     @Published var currentEvent: String = "Lincoln Douglas"
     @Published var view: String = "EventsView"
     @Published var settings: Bool = false
+    @Published var eventOrder: Bool = false
     @Published var timers: [TimerCode] = []
     @AppStorage("prepTimeAFF") var prepTimeAFF: Int = 240
     @AppStorage("prepTimeNEG") var prepTimeNEG: Int = 240
+
+    let supportedEvents: [String] = [
+        "Big Questions",
+        "Student Congress",
+        "Lincoln Douglas",
+        "Parliamentary",
+        "Policy",
+        "Public Forum",
+        "World Schools"
+    ]
 
     // Dictionary of events : (Set of times, titles, and types)
     private let eventPresets: [String: (times: [Double], titles: [String], types: [String], speakers: [String], prepTime: Double, protectedTime: [Double])] = [
@@ -129,4 +140,3 @@ struct Podium_TimerApp: App {
         }
     }
 }
-

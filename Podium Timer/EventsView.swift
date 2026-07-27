@@ -4,8 +4,19 @@ struct EventsView: View {
     @EnvironmentObject var AppState: AppState
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
     @AppStorage("theme") private var theme: String = "Dark"
+    @AppStorage("eventOrder") private var storedEventOrder: String = ""
     
     @State private var settingsIconRotation = 0
+
+    private var orderedEventDescriptors: [EventDescriptor] {
+        let storedEvents = storedEventOrder
+            .split(separator: "|")
+            .map(String.init)
+            .filter { AppState.supportedEvents.contains($0) }
+        let orderedEvents = storedEvents + AppState.supportedEvents.filter { !storedEvents.contains($0) }
+
+        return orderedEvents.compactMap { EventDescriptor.eventsByTitle[$0] }
+    }
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -40,40 +51,40 @@ struct EventsView: View {
                 .frame(height: UIDevice.current.userInterfaceIdiom == .pad ? 110 : nil)
                 
                 List {
-                    EventButton(eventTitle: "Big Questions", backgroundText: "BQ", backgroundTextOffset: -60, event: "Big Questions")
+                    ForEach(orderedEventDescriptors) { event in
+                        EventButton(
+                            eventTitle: event.title,
+                            backgroundText: event.backgroundText,
+                            backgroundTextOffset: event.backgroundTextOffset,
+                            event: event.title
+                        )
                         .listRowSeparator(.hidden)
                         .listRowBackground(Color.clear)
                         .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
+                    }
+                    
+                    HStack {
+                        Spacer()
 
-                    EventButton(eventTitle: "Student Congress", backgroundText: "Con", backgroundTextOffset: -60, event: "Student Congress")
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
+                        Button(action: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                AppState.eventOrder = true
+                            }
+                        }) {
+                            Text("Edit Events")
+                                .font(.system(size: 17, weight: .light))
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 5)
+                            .foregroundStyle(.primary)
+                        }
+                        .buttonBorderShape(.capsule)
+                        .GlassButtonIfAvailable()
 
-                    EventButton(eventTitle: "Lincoln Douglas", backgroundText: "LD", backgroundTextOffset: -80, event: "Lincoln Douglas")
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
-
-                    EventButton(eventTitle: "Parliamentary", backgroundText: "Parli", backgroundTextOffset: -50, event: "Parliamentary")
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
-
-                    EventButton(eventTitle: "Policy", backgroundText: "CX", backgroundTextOffset: -80, event: "Policy")
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
-
-                    EventButton(eventTitle: "Public Forum", backgroundText: "PF", backgroundTextOffset: -80, event: "Public Forum")
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
-
-                    EventButton(eventTitle: "World Schools", backgroundText: "WS", backgroundTextOffset: -80, event: "World Schools")
-                        .listRowSeparator(.hidden)
-                        .listRowBackground(Color.clear)
-                        .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
+                        Spacer()
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowBackground(Color.clear)
+                    .listRowInsets(EdgeInsets(top: 10, leading: 6, bottom: 10, trailing: 6))
                     
                     // Spacer adds bottom padding via an empty row
                     Color.clear
@@ -136,8 +147,53 @@ struct EventsView: View {
                 }
             }
             .animation(.easeInOut(duration: 0.3), value: AppState.settings)
+
+            // Event order overlay
+            ZStack {
+                if AppState.eventOrder {
+                    ZStack {
+                        Color.black.opacity(0.7).ignoresSafeArea()
+
+                        VStack {
+                            Spacer()
+                            EventOrderView()
+                            Spacer()
+                        }
+                        .frame(maxWidth: 600, maxHeight: 800)
+                    }
+                    .transition(.opacity)
+                    .zIndex(1)
+                }
+            }
+            .animation(.easeInOut(duration: 0.3), value: AppState.eventOrder)
         }
     }
+}
+
+private struct EventDescriptor: Identifiable {
+    let id: String
+    let title: String
+    let backgroundText: String
+    let backgroundTextOffset: CGFloat
+
+    init(title: String, backgroundText: String, backgroundTextOffset: CGFloat) {
+        self.id = title
+        self.title = title
+        self.backgroundText = backgroundText
+        self.backgroundTextOffset = backgroundTextOffset
+    }
+
+    static let all: [EventDescriptor] = [
+        EventDescriptor(title: "Big Questions", backgroundText: "BQ", backgroundTextOffset: -60),
+        EventDescriptor(title: "Student Congress", backgroundText: "Con", backgroundTextOffset: -60),
+        EventDescriptor(title: "Lincoln Douglas", backgroundText: "LD", backgroundTextOffset: -80),
+        EventDescriptor(title: "Parliamentary", backgroundText: "Parli", backgroundTextOffset: -50),
+        EventDescriptor(title: "Policy", backgroundText: "CX", backgroundTextOffset: -80),
+        EventDescriptor(title: "Public Forum", backgroundText: "PF", backgroundTextOffset: -80),
+        EventDescriptor(title: "World Schools", backgroundText: "WS", backgroundTextOffset: -80)
+    ]
+
+    static let eventsByTitle = Dictionary(uniqueKeysWithValues: all.map { ($0.title, $0) })
 }
 
 struct EventButton: View {
