@@ -319,6 +319,9 @@ struct DebateView: View {
                 primaryButton: .destructive(Text("End Round")) {
                     timers.forEach { $0.stop() }
                     UIApplication.shared.isIdleTimerDisabled = false
+                    Task {
+                        await PodiumTimerLiveActivityController.endAll()
+                    }
                     AppState.view = "EventsView"
 
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.55) {
@@ -350,6 +353,9 @@ struct DebateView: View {
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = currentTimer.timerRunning
+            Task {
+                await PodiumTimerLiveActivityController.start(eventTitle: AppState.currentEvent)
+            }
 
             // Configure protected time for the current speech when the view appears
             if AppState.speechTitles.indices.contains(AppState.currentTabIndex) {

@@ -5,14 +5,14 @@ import SwiftUI
 struct PodiumTimerAttributes: ActivityAttributes {
     struct ContentState: Codable, Hashable { }
 
-    var title: String
+    let title: String
 }
 
 struct PodiumTimerWidgetsLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: PodiumTimerAttributes.self) { _ in
+        ActivityConfiguration(for: PodiumTimerAttributes.self) { context in
             ZStack {
-                Text("LD")
+                Text(abbreviation(for: context.attributes.title))
                     .font(.system(size: 130, weight: .bold))
                     .foregroundColor(Color.primary.opacity(0.2))
                     .fixedSize(horizontal: true, vertical: false)
@@ -26,26 +26,24 @@ struct PodiumTimerWidgetsLiveActivity: Widget {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.top, 20)
                             .padding(.leading, 30)
-                            .activityBackgroundTint(.black)
-                            .activitySystemActionForegroundColor(.white)
                         
                         Text("Debate in progress")
                             .font(.headline)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.bottom, 20)
                             .padding(.leading, 30)
-                            .activityBackgroundTint(.black)
-                            .activitySystemActionForegroundColor(.white)
                     }
                     
                     Spacer()
                 }
             }
             .frame(maxHeight: 90)
-        } dynamicIsland: { _ in
+            .activityBackgroundTint(.black)
+            .activitySystemActionForegroundColor(.white)
+        } dynamicIsland: { context in
             DynamicIsland {
                 DynamicIslandExpandedRegion(.center) {
-                    Text("Debate in progress")
+                    Text(context.attributes.title)
                         .font(.headline)
                 }
             } compactLeading: {
@@ -55,6 +53,27 @@ struct PodiumTimerWidgetsLiveActivity: Widget {
             } minimal: {
                 Image(systemName: "timer")
             }
+        }
+    }
+
+    private func abbreviation(for title: String) -> String {
+        switch title {
+        case "Big Questions":
+            "BQ"
+        case "Student Congress":
+            "Con"
+        case "Lincoln Douglas":
+            "LD"
+        case "Parliamentary":
+            "Parli"
+        case "Policy":
+            "CX"
+        case "Public Forum":
+            "PF"
+        case "World Schools":
+            "WS"
+        default:
+            ""
         }
     }
 }
@@ -80,4 +99,3 @@ extension PodiumTimerAttributes.ContentState {
 } contentStates: {
     PodiumTimerAttributes.ContentState.preview
 }
-        
