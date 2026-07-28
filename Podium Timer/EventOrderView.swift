@@ -33,8 +33,7 @@ struct EventOrderView: View {
                 .GlassButtonIfAvailable()
                 .offset(x: 5)
             }
-            .padding(.top, 10)
-            .padding(.bottom, 5)
+            .padding(.vertical, 7.5)
             .padding(.horizontal, 5)
             
             List {

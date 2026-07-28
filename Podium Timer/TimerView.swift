@@ -84,7 +84,7 @@ struct TimerView: View {
                         .font(.system(size: isPad ? 34 : 28, weight: .bold))
                 }
                 .opacity(TimerCode.timerRunning && timerStageDimmingEnabled ? 0.1 : 1.0)
-                .offset(y: isPad ? -18 : (isLargePhone ? -40 : -20))
+                .offset(y: isPad ? -18 : (isLargePhone ? -40 : -17.5))
                 .animation(.easeInOut, value: TimerCode.timerRunning)
                                 
                 // Timer circle

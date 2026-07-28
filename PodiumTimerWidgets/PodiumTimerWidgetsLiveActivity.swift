@@ -3,7 +3,13 @@ import WidgetKit
 import SwiftUI
 
 struct PodiumTimerAttributes: ActivityAttributes {
-    struct ContentState: Codable, Hashable { }
+    struct ContentState: Codable, Hashable {
+        let isTimerRunning: Bool
+        let remainingTime: TimeInterval
+        let currentSpeechTitle: String
+        let currentSpeechType: String
+        let currentSide: String
+    }
 
     let title: String
 }
@@ -38,7 +44,7 @@ struct PodiumTimerWidgetsLiveActivity: Widget {
                 }
             }
             .frame(maxHeight: 90)
-            .activityBackgroundTint(.black)
+            .activityBackgroundTint(.yellow)
             .activitySystemActionForegroundColor(.white)
         } dynamicIsland: { context in
             DynamicIsland {
@@ -86,7 +92,13 @@ extension PodiumTimerAttributes {
 
 extension PodiumTimerAttributes.ContentState {
     static var preview: PodiumTimerAttributes.ContentState {
-        PodiumTimerAttributes.ContentState()
+        PodiumTimerAttributes.ContentState(
+            isTimerRunning: true,
+            remainingTime: 360,
+            currentSpeechTitle: "1AC",
+            currentSpeechType: "AFF",
+            currentSide: "AFF"
+        )
     }
 }
 

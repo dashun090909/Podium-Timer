@@ -36,6 +36,7 @@ struct DebateView: View {
     // New state variables for sheet presentation
     @State private var showAffPrep: Bool = false
     @State private var showNegPrep: Bool = false
+    @State private var lastLiveActivityRemainingSecond: Int?
 
     // Computed property for shared timers
     var timers: [TimerCode] {
@@ -61,6 +62,52 @@ struct DebateView: View {
         let minutes = clamped / 60
         let secs = clamped % 60
         return String(format: "%d:%02d", minutes, secs)
+    }
+    
+    private var currentSpeechTitle: String {
+        guard AppState.speechTitles.indices.contains(AppState.currentTabIndex) else {
+            return ""
+        }
+        return AppState.speechTitles[AppState.currentTabIndex]
+    }
+    private var currentSpeechType: String {
+        guard AppState.speechTypes.indices.contains(AppState.currentTabIndex) else {
+            return ""
+        }
+        return AppState.speechTypes[AppState.currentTabIndex]
+    }
+    private var currentSide: String {
+        if currentSpeechType.hasPrefix("AFF") {
+            return "AFF"
+        }
+        if currentSpeechType.hasPrefix("NEG") {
+            return "NEG"
+        }
+        return currentSpeechType
+    }
+    
+    // Reports speech information to PodiumTimerWidgetsLiveActivity
+    private var currentLiveActivityState: PodiumTimerAttributes.ContentState {
+        PodiumTimerAttributes.ContentState(
+            isTimerRunning: currentTimer.timerRunning,
+            remainingTime: currentTimer.remainingTime,
+            currentSpeechTitle: currentSpeechTitle,
+            currentSpeechType: currentSpeechType,
+            currentSide: currentSide
+        )
+    }
+    private func updateLiveActivity(force: Bool = false) {
+        let currentSecond = Int(currentTimer.remainingTime.rounded(.towardZero))
+        guard force || currentSecond != lastLiveActivityRemainingSecond else {
+            return
+        }
+
+        lastLiveActivityRemainingSecond = currentSecond
+        let state = currentLiveActivityState
+
+        Task {
+            await LiveActivityController.update(state: state)
+        }
     }
 
     var body: some View {
@@ -204,6 +251,7 @@ struct DebateView: View {
                             currentTimer.reset()
                             swipeAllowed = true
                             UIApplication.shared.isIdleTimerDisabled = currentTimer.timerRunning
+                            updateLiveActivity(force: true)
                         }
                     }) {
                         Text("Reset")
@@ -236,6 +284,7 @@ struct DebateView: View {
                         swipeAllowed = false
                     }
                     UIApplication.shared.isIdleTimerDisabled = currentTimer.timerRunning
+                    updateLiveActivity(force: true)
                 }) {
                     Text(currentTimer.timerRunning ? "Stop" : "Start")
                         .frame(width: UIDevice.current.userInterfaceIdiom == .phone ? 110 : 300, height: UIDevice.current.userInterfaceIdiom == .phone ? 110 : 86)
@@ -320,7 +369,7 @@ struct DebateView: View {
                     timers.forEach { $0.stop() }
                     UIApplication.shared.isIdleTimerDisabled = false
                     Task {
-                        await PodiumTimerLiveActivityController.endAll()
+                        await LiveActivityController.endAll()
                     }
                     AppState.view = "EventsView"
 
@@ -353,8 +402,10 @@ struct DebateView: View {
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = currentTimer.timerRunning
+            lastLiveActivityRemainingSecond = nil
+            let initialState = currentLiveActivityState
             Task {
-                await PodiumTimerLiveActivityController.start(eventTitle: AppState.currentEvent)
+                await LiveActivityController.start(eventTitle: AppState.currentEvent, state: initialState)
             }
 
             // Configure protected time for the current speech when the view appears
@@ -370,6 +421,13 @@ struct DebateView: View {
             // Reconfigure protected time whenever the user switches speeches
             let minutes = AppState.protectedTimes.count == 1 && AppState.protectedTimes.first == 0 ? 0 : (newValue < AppState.protectedTimes.count ? AppState.protectedTimes[newValue] : 0)
             currentTimer.configureProtectedTime(minutesPerSide: minutes)
+            updateLiveActivity(force: true)
+        }
+        .onChange(of: currentTimer.remainingTime) {
+            updateLiveActivity()
+        }
+        .onChange(of: currentTimer.timerRunning) {
+            updateLiveActivity(force: true)
         }
     }
 }
