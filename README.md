@@ -32,12 +32,11 @@ https://drive.google.com/file/d/1fjz7AB_OJFNdy--DsaDWB85zX2w8R7TM/view?usp=shari
 4. Choose either an iPhone simulator or connect a physical iPhone/iPad to test on real hardware.
 5. Click "Run" or press cmd + R.
 
-## Additional Development Information:
+## AI Declaration
 
-- All of the flow of the application is controlled via Podium_TimerApp. Users navigate to DebateView after selecting an EventView (the main view).
-- Preferences are saved to local storage using @AppStorage.
-- TimerCode manages the clock logic, even when the app is closed.
-- All preset events along with their associated event data (times, names, speech type, prep time) are hardcoded into AppState.
+- I coded Podium Timer mostly myself, utilizing it as a learning experience for SwiftUI and iOS development.
+- Used the AI coding assistant tool within XCode to help with debugging at times, and always sparingly
+- Google Gemini was used to search online for documentation amd to understand Stack Overflow threads
 
 ## Screenshots
 
