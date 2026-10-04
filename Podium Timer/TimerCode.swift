@@ -24,7 +24,7 @@ class TimerCode: ObservableObject {
         protectedWindowPerSide = (max(0, minutesPerSide) * 60)
     }
     
-    private var tickIncrement: TimeInterval = 0.01
+    private var tickIncrement: TimeInterval = 0.1
     
     private var timerSpeed: Double = 1
     
@@ -37,10 +37,12 @@ class TimerCode: ObservableObject {
     
     // Converts remaining time to formatted string (Self-published)
     var timerAnalog: String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.minute, .second] // Format as minutes and seconds
-        formatter.zeroFormattingBehavior = .pad    // Add leading zeros
-        return formatter.string(from: abs(remainingTime)) ?? "00:00"
+        let seconds = Int(remainingTime.rounded(.towardZero))
+        let absVal = abs(seconds)
+        let m = absVal / 60
+        let s = absVal % 60
+        let base = String(format: "%02d:%02d", m, s)
+        return seconds < 0 ? "-" + base : base
     }
     
     

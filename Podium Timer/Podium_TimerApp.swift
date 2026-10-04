@@ -74,7 +74,7 @@ class AppState: ObservableObject {
             times: [8, 8, 8, 8, 8, 8, 4, 4],
             titles: ["1st PROP", "1st OPP", "2nd PROP", "2nd OPP", "3rd PROP", "3rd OPP", "OPP Reply", "PROP Reply"],
             types: ["AFF", "NEG", "AFF", "NEG", "AFF", "NEG", "NEG", "AFF"],
-            speakers: ["1st Prop Speaker", "1st OPP Speaker", "2nd PROP Speaker", "2nd OPP Speaker", "1st/2nd PROP Speaker", "1st/2nd OPP Speaker"],
+            speakers: ["1st PROP Speaker", "1st OPP Speaker", "2nd PROP Speaker", "2nd OPP Speaker", "3rd PROP Speaker", "3rd OPP Speaker", "1st/2nd PROP Speaker", "1st/2nd OPP Speaker"],
             prepTime: 0,
             protectedTime: [1, 1]
         ),

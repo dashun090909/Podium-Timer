@@ -18,6 +18,13 @@ private struct OvertimeBackground: View {
 }
 
 struct DebateView: View {
+    private enum ActivePrepSheet: String, Identifiable {
+        case aff
+        case neg
+
+        var id: String { rawValue }
+    }
+
     @EnvironmentObject var AppState: AppState
     @AppStorage("theme") private var theme: String = "Dark"
     @AppStorage("overtimeRedEnabled") private var overtimeRedEnabled: Bool = true
@@ -34,8 +41,7 @@ struct DebateView: View {
     @State private var showEndRoundConfirmation: Bool = false
 
     // New state variables for sheet presentation
-    @State private var showAffPrep: Bool = false
-    @State private var showNegPrep: Bool = false
+    @State private var activePrepSheet: ActivePrepSheet?
     @State private var lastLiveActivityRemainingSecond: Int?
 
     // Computed property for shared timers
@@ -51,9 +57,26 @@ struct DebateView: View {
         return timers[AppState.currentTabIndex]
     }
     
+    // Prevents overindex crashes
+    private var timerPageCount: Int {
+        min(AppState.speechTitles.count, AppState.speechTimes.count, timers.count)
+    }
+    
     // Handles custom iPad layout trigger
     private var isPad: Bool {
         UIDevice.current.userInterfaceIdiom == .pad
+    }
+    
+    // Handles showing prep time sheet
+    private var prepSheetIsPresented: Binding<Bool> {
+        Binding(
+            get: { activePrepSheet != nil },
+            set: { isPresented in
+                if !isPresented {
+                    activePrepSheet = nil
+                }
+            }
+        )
     }
     
     // Seconds to digital time formatter
@@ -163,11 +186,11 @@ struct DebateView: View {
                 
                 // Tabview of TimerView instances according to AppState arrays
                 TabView(selection: $AppState.currentTabIndex) {
-                    ForEach(0..<AppState.speechTitles.count, id: \.self) { index in
+                    ForEach(0..<timerPageCount, id: \.self) { index in
                         TimerView(
                             speechTitle: AppState.speechTitles[index],
                             totalTime: AppState.speechTimes[index],
-                            timerCode: currentTimer
+                            timerCode: index < timers.count ? timers[index] : currentTimer
                         )
                         .offset(y: isPad ? 18 : 0)
                         .tag(index)
@@ -190,7 +213,7 @@ struct DebateView: View {
                             // AFF Prep
                             Button(action: {
                                 if AppState.eventPrepTime > 0 && !currentTimer.timerRunning {
-                                    showAffPrep = true
+                                    activePrepSheet = .aff
                                 }
                             }, label: {
                                 Text("Prep\n\(formatMMSS(AppState.prepTimeAFF))")
@@ -219,7 +242,7 @@ struct DebateView: View {
                             // NEG Prep
                             Button(action: {
                                 if AppState.eventPrepTime > 0 && !currentTimer.timerRunning {
-                                    showNegPrep = true
+                                    activePrepSheet = .neg
                                 }
                             }, label: {
                                 Text("Prep\n\(formatMMSS(AppState.prepTimeNEG))")
@@ -322,7 +345,7 @@ struct DebateView: View {
                 // AFF Prep Time
                 Button(action: {
                     if AppState.eventPrepTime > 0 && !currentTimer.timerRunning {
-                        showAffPrep = true
+                        activePrepSheet = .aff
                     }
                 }, label: {
                     Text("Prep\n\(formatMMSS(AppState.prepTimeAFF))")
@@ -340,7 +363,7 @@ struct DebateView: View {
                 // NEG Prep Time
                 Button(action: {
                     if AppState.eventPrepTime > 0 && !currentTimer.timerRunning {
-                        showNegPrep = true
+                        activePrepSheet = .neg
                     }                }, label: {
                     Text("Prep\n\(formatMMSS(AppState.prepTimeNEG))")
                         .font(.system(size: isPad ? 24 : 20, weight: .semibold))
@@ -390,15 +413,18 @@ struct DebateView: View {
         }
         
         // Prep Time Overlay Sheets
-        .sheet(isPresented: $showAffPrep) {
-            PrepTimeView(side: .aff, color: Color(hex: affColorHex), affRemainingSeconds: $AppState.prepTimeAFF, negRemainingSeconds: $AppState.prepTimeNEG, isPresented: $showAffPrep)
-                .presentationDetents([.height(isPad ? 360 : 260)])
-                .presentationDragIndicator(.visible)
-        }
-        .sheet(isPresented: $showNegPrep) {
-            PrepTimeView(side: .neg, color: Color(hex: negColorHex), affRemainingSeconds: $AppState.prepTimeAFF, negRemainingSeconds: $AppState.prepTimeNEG, isPresented: $showNegPrep)
-                .presentationDetents([.height(isPad ? 350 : 260)])
-                .presentationDragIndicator(.visible)
+        .sheet(item: $activePrepSheet) { sheet in
+            let isAffSheet = sheet == .aff
+
+            PrepTimeView(
+                side: isAffSheet ? .aff : .neg,
+                color: Color(hex: isAffSheet ? affColorHex : negColorHex),
+                affRemainingSeconds: $AppState.prepTimeAFF,
+                negRemainingSeconds: $AppState.prepTimeNEG,
+                isPresented: prepSheetIsPresented
+            )
+            .presentationDetents([.height(isPad ? (isAffSheet ? 360 : 350) : 260)])
+            .presentationDragIndicator(.visible)
         }
         .onAppear {
             UIApplication.shared.isIdleTimerDisabled = currentTimer.timerRunning
@@ -410,7 +436,7 @@ struct DebateView: View {
 
             // Configure protected time for the current speech when the view appears
             if AppState.speechTitles.indices.contains(AppState.currentTabIndex) {
-                let minutes = AppState.protectedTimes.count == 1 && AppState.protectedTimes.first == 0 ? 0 : (AppState.currentTabIndex < AppState.protectedTimes.count ? AppState.protectedTimes[AppState.currentTabIndex] : 0)
+                let minutes = AppState.protectedMinutesForSpeech(at: AppState.currentTabIndex)
                 currentTimer.configureProtectedTime(minutesPerSide: minutes)
             }
         }
@@ -419,7 +445,7 @@ struct DebateView: View {
         }
         .onChange(of: AppState.currentTabIndex) { _, newValue in
             // Reconfigure protected time whenever the user switches speeches
-            let minutes = AppState.protectedTimes.count == 1 && AppState.protectedTimes.first == 0 ? 0 : (newValue < AppState.protectedTimes.count ? AppState.protectedTimes[newValue] : 0)
+            let minutes = AppState.protectedMinutesForSpeech(at: newValue)
             currentTimer.configureProtectedTime(minutesPerSide: minutes)
             updateLiveActivity(force: true)
         }
